@@ -11,15 +11,7 @@ describe("Sidebar Tests", () => {
   beforeEach(() => {
     cy.session("user-session", () => {
       cy.fixture("credentials").then((credentials) => {
-        cy.visit("/auth/sign-in");
-        cy.get('[formcontrolname="loginEmail"]').type(
-          credentials.validUser.email
-        );
-        cy.get('[formcontrolname="loginPassword"]').type(
-          credentials.validUser.password
-        );
-        cy.get(".mdc-button__label").click();
-        cy.url().should("include", "/dashboard");
+        cy.login(credentials.validUser.email, credentials.validUser.password);
       });
     });
     cy.log("Session restored, navigating to dashboard...");
