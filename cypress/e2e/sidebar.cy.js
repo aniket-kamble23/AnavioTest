@@ -67,7 +67,7 @@ describe("Sidebar Tests", () => {
     ];
 
     menuItems.forEach(({ path, label }) => {
-      const selector = `[ng-reflect-router-link="${path}"]`;
+      const selector = `[href="${path}"]`;
 
       // Check if the menu item is visible and contains the expected label
       cy.get(selector).should("be.visible").and("contain.text", label);
@@ -93,15 +93,15 @@ describe("Sidebar Tests", () => {
 
   it("when expanded, it should navigate to the appropriate pages when each router link is clicked", () => {
     // Devices
-    cy.get('[ng-reflect-router-link="/devices"]').click();
+    cy.get('[href="/devices"]').click();
     cy.url().should("include", "/devices/cameras/all-cameras");
 
     // Video Wall
-    cy.get('[ng-reflect-router-link="/video-wall"]').click();
+    cy.get('[href="/video-wall"]').click();
     cy.url().should("include", "/video-wall");
 
     // Dashboard
-    cy.get('[ng-reflect-router-link="/dashboard"]').click();
+    cy.get('[href="/dashboard"]').click();
     cy.url().should("include", "/dashboard");
   });
 
@@ -309,7 +309,7 @@ describe("Sidebar Tests", () => {
     ];
 
     menuItems.forEach(({ path, label }) => {
-      const selector = `[ng-reflect-router-link="${path}"]`;
+      const selector = `[href="${path}"]`;
 
       // Check if the menu item is visible
       cy.get(selector).should("be.visible");
@@ -330,15 +330,15 @@ describe("Sidebar Tests", () => {
     cy.get(".sidebar-toggler").click();
     
     // Devices
-    cy.get('[ng-reflect-router-link="/devices"]').click();
+    cy.get('[href="/devices"]').click();
     cy.url().should("include", "/devices/cameras/all-cameras");
 
     // Video Wall
-    cy.get('[ng-reflect-router-link="/video-wall"]').click();
+    cy.get('[href="/video-wall"]').click();
     cy.url().should("include", "/video-wall");
 
     // Dashboard
-    cy.get('[ng-reflect-router-link="/dashboard"]').click();
+    cy.get('[href="/dashboard"]').click();
     cy.url().should("include", "/dashboard");
   });
 
