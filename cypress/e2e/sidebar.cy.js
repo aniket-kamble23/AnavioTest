@@ -63,6 +63,7 @@ describe("Sidebar Tests", () => {
     const menuItems = [
       { path: "/dashboard", label: "Dashboard" },
       { path: "/devices", label: "Devices" },
+      // { path: "/people", label: "People" },
       { path: "/video-wall", label: "Video Wall" },
     ];
 
@@ -95,6 +96,10 @@ describe("Sidebar Tests", () => {
     // Devices
     cy.get('[href="/devices"]').click();
     cy.url().should("include", "/devices/cameras/all-cameras");
+
+    // People
+    // cy.get('[href="/people"]').click();
+    // cy.url().should("include", "/people/activity");
 
     // Video Wall
     cy.get('[href="/video-wall"]').click();
@@ -305,6 +310,7 @@ describe("Sidebar Tests", () => {
     const menuItems = [
       { path: "/dashboard" },
       { path: "/devices" },
+      // { path: "/people" },
       { path: "/video-wall" },
     ];
 
@@ -332,6 +338,10 @@ describe("Sidebar Tests", () => {
     // Devices
     cy.get('[href="/devices"]').click();
     cy.url().should("include", "/devices/cameras/all-cameras");
+
+    // People
+    // cy.get('[href="/people"]').click();
+    // cy.url().should("include", "/people/activity");
 
     // Video Wall
     cy.get('[href="/video-wall"]').click();

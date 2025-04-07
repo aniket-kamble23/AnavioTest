@@ -64,8 +64,13 @@ describe("Dashboard Page Tests", () => {
         // Verify the two buttons and their labels
         .within(() => {
           cy.get("button").should("have.length", 2);
-          cy.get("button").eq(0).contains("Door Activity");
-          cy.get("button").eq(1).contains("Door Control");
+          // Select the first button, assert its label and that it is active
+          cy.get("button")
+            .eq(0)
+            .should("contain.text", "Door Activity")
+            .and("have.class", "active");
+          // Select the second button, check its label  
+          cy.get("button").eq(1).should("contain.text", "Door Control");
         });
       // Verify mat-expansion-indicator contains an svg and the svg is visible
       cy.get("mat-expansion-panel-header .mat-expansion-indicator svg").should(
@@ -268,6 +273,13 @@ describe("Dashboard Page Tests", () => {
               });
           });
       });
+  });
+
+  it("should click on the Door Control button and verify the button is active", () => {
+    // Click on the Door Control button
+    cy.get("app-dashboard-door-activity button").eq(1).click();
+    // Verify the Door Control button is active
+    cy.get("app-dashboard-door-activity button").eq(1).should("have.class", "active");
   });
 
   it("should display all required Camera Activity Header UI elements", () => {
