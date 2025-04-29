@@ -1,1 +1,3 @@
+.DS_Store
+cypress/downloads
 node_modules/
