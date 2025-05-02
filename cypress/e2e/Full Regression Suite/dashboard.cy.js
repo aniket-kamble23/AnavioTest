@@ -14,7 +14,7 @@ describe("Dashboard Page Tests", () => {
         cy.login(credentials.validUser.email, credentials.validUser.password);
       });
     });
-    cy.log("Session restored, navigating to dashboard...");
+    cy.log("Session restored, navigating to Dashboard...");
     cy.visit("/dashboard");
   });
 
@@ -60,7 +60,7 @@ describe("Dashboard Page Tests", () => {
     cy.get("app-dashboard-door-activity").within(() => {
       // Verify Header
       cy.get("mat-expansion-panel-header")
-        .should("exist")
+        .should("be.visible")
         // Verify the two buttons and their labels
         .within(() => {
           cy.get("button").should("have.length", 2);
@@ -126,7 +126,6 @@ describe("Dashboard Page Tests", () => {
   it("should display all required Door Activity Table Rows UI elements", () => {
     // Verify at least one Door Activity row exists
     cy.get('[data-test-id="mat-door-activityList-data"]')
-      .should("exist")
       .and("be.visible");
 
     // For the first row, verify all required columns are populated
@@ -307,6 +306,121 @@ describe("Dashboard Page Tests", () => {
     cy.get(".camera-activity-list").within(() => {
       // Verify the number of camera activity cards
       cy.get("app-camera-activity-card").should("have.length", 20);
+    });
+  });
+
+  it("should display today's date in each Camera Activity Card header", () => {
+    const today = new Date();
+    const formattedDate = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
+  
+    cy.get(".camera-activity-list").within(() => {
+      cy.get("app-camera-activity-card").each(($card) => {
+        cy.wrap($card)
+          .find(".camera-activity-date-time")
+          .invoke("text")
+          .should("contain", formattedDate);
+      });
+    });
+  });
+
+  it("should have a 3-dot menu button with correct icon in each Camera Activity Card header", () => {
+    cy.get(".camera-activity-list").within(() => {
+      cy.get("app-camera-activity-card").each(($card) => {
+        cy.wrap($card)
+          .find("button.menu-button")
+          .should("exist")
+          .within(() => {
+            cy.get("mat-icon")
+              .should("have.attr", "data-mat-icon-name", "more-vertical");
+          });
+      });
+    });
+  });
+
+  it("should display 'Play Event' and 'Camera History' options with icons in the first Camera Activity Card menu", () => {
+    // Open the menu on the first card
+    cy.get(".camera-activity-list")
+      .find("app-camera-activity-card")
+      .first()
+      .within(() => {
+        cy.get("button.menu-button").click();
+      });
+  
+    // Wait for the menu panel to appear in the DOM
+    cy.get(".mat-mdc-menu-panel")
+      .should("be.visible")
+      .within(() => {
+        const menuItems = [
+          { name: "Play Event", index: 0 },
+          { name: "Camera History", index: 1 },
+        ];
+  
+        // Loop through the menu items for both checks
+        menuItems.forEach(({ name, index }) => {
+          cy.get("button.mat-mdc-menu-item")
+            .eq(index) // Dynamically targets Play Event (index 0) and Camera History (index 1)
+            .should("be.visible")
+            .contains(name);
+  
+          // Ensure the icon exists for each item
+          cy.get(`:nth-child(${index + 1}) > .mat-mdc-menu-item-text > .icon-container > mat-icon`)
+            .should("be.visible");
+        });
+      });
+  
+    // Close the menu
+    cy.get("body").click(0, 0);
+  });
+
+  it("should display an image in each Camera Activity Card", () => {
+    cy.get(".camera-activity-list").within(() => {
+      cy.get("app-camera-activity-card").each(($card) => {
+        cy.wrap($card).within(() => {
+          cy.get("img.camera-activity-image").should("exist");
+        });
+      });
+    });
+  });
+
+  it("should display a site name and camera name in each Camera Activity Card footer", () => {
+    const validSiteNames = ["Clovis Site", "Pune Site"];
+    const validCameraNames = [
+      "Camera 0009-Hub 2898",
+      "Camera 0010-Hub 2859",
+      "Camera 0011-Hub 2806"
+    ];
+  
+    cy.get(".camera-activity-list").within(() => {
+      cy.get("app-camera-activity-card").each(($card) => {
+        cy.wrap($card).within(() => {
+          // Validate Site Name
+          cy.get(".site-name")
+            .should("exist")
+            .invoke("text")
+            .then((siteName) => {
+              expect(siteName.trim().length).to.be.greaterThan(0);
+              // Optional: check if it's one of the known names (or allow others)
+              if (validSiteNames.includes(siteName.trim())) {
+                expect(validSiteNames).to.include(siteName.trim());
+              } else {
+                cy.log(`Encountered new Site Name: ${siteName.trim()}`);
+              }
+            });
+  
+          // Validate Camera Name
+          cy.get(".camera-name")
+            .should("exist")
+            .invoke("text")
+            .then((cameraName) => {
+              expect(cameraName.trim().length).to.be.greaterThan(0);
+              if (validCameraNames.includes(cameraName.trim())) {
+                expect(validCameraNames).to.include(cameraName.trim());
+              } else {
+                cy.log(`Encountered new Camera Name: ${cameraName.trim()}`);
+              }
+            });
+        });
+      });
     });
   });
 

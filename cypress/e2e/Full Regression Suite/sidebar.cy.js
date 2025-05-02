@@ -14,7 +14,7 @@ describe("Sidebar Tests", () => {
         cy.login(credentials.validUser.email, credentials.validUser.password);
       });
     });
-    cy.log("Session restored, navigating to dashboard...");
+    cy.log("Session restored, navigating to Dashboard...");
     cy.visit("/dashboard");
   });
 
