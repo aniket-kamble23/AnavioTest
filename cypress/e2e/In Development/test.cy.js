@@ -1,4 +1,4 @@
-describe("Dashboard Page Tests", () => {
+describe("Sites Page Tests", () => {
   before(() => {
     Cypress.session.clearAllSavedSessions();
     cy.clearCookies();
@@ -14,8 +14,8 @@ describe("Dashboard Page Tests", () => {
         cy.login(credentials.validUser.email, credentials.validUser.password);
       });
     });
-    cy.log("Session restored, navigating to dashboard...");
-    cy.visit("/dashboard");
+    cy.log("Session restored, navigating to Sites...");
+    cy.visit("/settings/sites");
   });
 
   it("should do something :)", () => {

@@ -69,7 +69,7 @@ describe("Dashboard Page Tests", () => {
             .eq(0)
             .should("contain.text", "Door Activity")
             .and("have.class", "active");
-          // Select the second button, check its label  
+          // Select the second button, check its label
           cy.get("button").eq(1).should("contain.text", "Door Control");
         });
       // Verify mat-expansion-indicator contains an svg and the svg is visible
@@ -125,8 +125,7 @@ describe("Dashboard Page Tests", () => {
 
   it("should display all required Door Activity Table Rows UI elements", () => {
     // Verify at least one Door Activity row exists
-    cy.get('[data-test-id="mat-door-activityList-data"]')
-      .and("be.visible");
+    cy.get('[data-test-id="mat-door-activityList-data"]').and("be.visible");
 
     // For the first row, verify all required columns are populated
     cy.get('[data-test-id="mat-door-activityList-data"]')
@@ -278,7 +277,9 @@ describe("Dashboard Page Tests", () => {
     // Click on the Door Control button
     cy.get("app-dashboard-door-activity button").eq(1).click();
     // Verify the Door Control button is active
-    cy.get("app-dashboard-door-activity button").eq(1).should("have.class", "active");
+    cy.get("app-dashboard-door-activity button")
+      .eq(1)
+      .should("have.class", "active");
   });
 
   it("should display all required Camera Activity Header UI elements", () => {
@@ -311,8 +312,10 @@ describe("Dashboard Page Tests", () => {
 
   it("should display today's date in each Camera Activity Card header", () => {
     const today = new Date();
-    const formattedDate = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
-  
+    const formattedDate = `${
+      today.getMonth() + 1
+    }/${today.getDate()}/${today.getFullYear()}`;
+
     cy.get(".camera-activity-list").within(() => {
       cy.get("app-camera-activity-card").each(($card) => {
         cy.wrap($card)
@@ -330,8 +333,11 @@ describe("Dashboard Page Tests", () => {
           .find("button.menu-button")
           .should("exist")
           .within(() => {
-            cy.get("mat-icon")
-              .should("have.attr", "data-mat-icon-name", "more-vertical");
+            cy.get("mat-icon").should(
+              "have.attr",
+              "data-mat-icon-name",
+              "more-vertical"
+            );
           });
       });
     });
@@ -345,7 +351,7 @@ describe("Dashboard Page Tests", () => {
       .within(() => {
         cy.get("button.menu-button").click();
       });
-  
+
     // Wait for the menu panel to appear in the DOM
     cy.get(".mat-mdc-menu-panel")
       .should("be.visible")
@@ -354,20 +360,23 @@ describe("Dashboard Page Tests", () => {
           { name: "Play Event", index: 0 },
           { name: "Camera History", index: 1 },
         ];
-  
+
         // Loop through the menu items for both checks
         menuItems.forEach(({ name, index }) => {
           cy.get("button.mat-mdc-menu-item")
             .eq(index) // Dynamically targets Play Event (index 0) and Camera History (index 1)
             .should("be.visible")
             .contains(name);
-  
+
           // Ensure the icon exists for each item
-          cy.get(`:nth-child(${index + 1}) > .mat-mdc-menu-item-text > .icon-container > mat-icon`)
-            .should("be.visible");
+          cy.get(
+            `:nth-child(${
+              index + 1
+            }) > .mat-mdc-menu-item-text > .icon-container > mat-icon`
+          ).should("be.visible");
         });
       });
-  
+
     // Close the menu
     cy.get("body").click(0, 0);
   });
@@ -387,9 +396,9 @@ describe("Dashboard Page Tests", () => {
     const validCameraNames = [
       "Camera 0009-Hub 2898",
       "Camera 0010-Hub 2859",
-      "Camera 0011-Hub 2806"
+      "Camera 0011-Hub 2806",
     ];
-  
+
     cy.get(".camera-activity-list").within(() => {
       cy.get("app-camera-activity-card").each(($card) => {
         cy.wrap($card).within(() => {
@@ -406,7 +415,7 @@ describe("Dashboard Page Tests", () => {
                 cy.log(`Encountered new Site Name: ${siteName.trim()}`);
               }
             });
-  
+
           // Validate Camera Name
           cy.get(".camera-name")
             .should("exist")

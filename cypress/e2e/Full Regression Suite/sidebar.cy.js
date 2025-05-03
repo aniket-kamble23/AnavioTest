@@ -6,7 +6,7 @@ describe("Sidebar Tests", () => {
     cy.window().then((win) => {
       win.sessionStorage.clear();
     });
-  });  
+  });
 
   beforeEach(() => {
     cy.session("user-session", () => {
@@ -26,7 +26,7 @@ describe("Sidebar Tests", () => {
       .then((width) => {
         expect(width).to.equal("288px");
       });
-  });      
+  });
 
   it("when expanded, it should display all required UI elements", () => {
     // Sidebar container
@@ -122,9 +122,7 @@ describe("Sidebar Tests", () => {
     cy.get(".mat-mdc-menu-item.ng-star-inserted")
       .should("be.visible")
       .within(() => {
-        cy.get(".mat-icon").should(
-          "be.visible"
-        );
+        cy.get(".mat-icon").should("be.visible");
         cy.contains("Profile Settings");
       });
 
@@ -169,16 +167,16 @@ describe("Sidebar Tests", () => {
         ).should("be.visible");
         cy.contains("Switch Account").click();
       });
-      cy.get('#cdk-accordion-child-1 > .mat-expansion-panel-body')
-        .should("be.visible")
-        .within(() => {
-          cy.get('.anavio-account-list > .mat-mdc-tooltip-trigger')
-            .should("be.visible")
-            .within(() => {
-              cy.contains("Clovis");
-              cy.contains("10000015")
-            });
-        });
+    cy.get("#cdk-accordion-child-1 > .mat-expansion-panel-body")
+      .should("be.visible")
+      .within(() => {
+        cy.get(".anavio-account-list > .mat-mdc-tooltip-trigger")
+          .should("be.visible")
+          .within(() => {
+            cy.contains("Clovis");
+            cy.contains("10000015");
+          });
+      });
 
     // Log out
     cy.get(".mat-mdc-menu-content > :nth-child(7)")
@@ -260,7 +258,7 @@ describe("Sidebar Tests", () => {
   });
 
   it("when expanded, it should collapse when the Anavio logo icon is clicked", () => {
-    cy.get('button > .anavio-icon').click();
+    cy.get("button > .anavio-icon").click();
     cy.get(".sidebar")
       .should("be.visible")
       .should(($sidebar) => {
@@ -271,31 +269,29 @@ describe("Sidebar Tests", () => {
   it("when collapsed, it should display all required UI elements", () => {
     // Collapse the sidebar
     cy.get(".sidebar-toggler").click();
-    
+
     // Sidebar container
     cy.get(".sidebar").should("be.visible");
 
     // Sidebar Logo
-    cy.get('.sidebar-logo')
+    cy.get(".sidebar-logo")
       .should("be.visible")
       .within(() => {
-        cy.get('.only-logo')
+        cy.get(".only-logo")
           .should("be.visible")
           .within(() => {
-            cy.get('.anavio-icon')
-              .should("be.visible");
+            cy.get(".anavio-icon").should("be.visible");
           });
       });
 
     // Sidebar Router Link
-    cy.get('.bg-anavio-blue-970')
+    cy.get(".bg-anavio-blue-970")
       .should("be.visible")
       .within(() => {
-        cy.get('.sidebar-selected-item')
+        cy.get(".sidebar-selected-item")
           .should("be.visible")
           .within(() => {
-            cy.get('.fill-anavio-blue-600 > path')
-              .should("be.visible");
+            cy.get(".fill-anavio-blue-600 > path").should("be.visible");
           });
       });
 
@@ -327,14 +323,13 @@ describe("Sidebar Tests", () => {
     });
 
     // User Info
-    cy.get('.w-11')
-      .should("be.visible");
+    cy.get(".w-11").should("be.visible");
   });
 
   it("when collapsed, it should navigate to the appropriate pages when each router link is clicked", () => {
     // Collapse the sidebar
     cy.get(".sidebar-toggler").click();
-    
+
     // Devices
     cy.get('[href="/devices"]').click();
     cy.url().should("include", "/devices/cameras/all-cameras");
@@ -355,7 +350,7 @@ describe("Sidebar Tests", () => {
   it("when collapsed, it should open the user account menu and verify each option exists", () => {
     // Collapse the sidebar
     cy.get(".sidebar-toggler").click();
-    
+
     cy.get(".mat-mdc-menu-trigger > .profile-image").click();
 
     // User Account Menu
@@ -365,9 +360,7 @@ describe("Sidebar Tests", () => {
     cy.get(".mat-mdc-menu-item.ng-star-inserted")
       .should("be.visible")
       .within(() => {
-        cy.get(".mat-icon").should(
-          "be.visible"
-        );
+        cy.get(".mat-icon").should("be.visible");
         cy.contains("Profile Settings");
       });
 
@@ -412,16 +405,16 @@ describe("Sidebar Tests", () => {
         ).should("be.visible");
         cy.contains("Switch Account").click();
       });
-      cy.get('#cdk-accordion-child-1 > .mat-expansion-panel-body')
-        .should("be.visible")
-        .within(() => {
-          cy.get('.anavio-account-list > .mat-mdc-tooltip-trigger')
-            .should("be.visible")
-            .within(() => {
-              cy.contains("Clovis");
-              cy.contains("10000015")
-            });
-        });
+    cy.get("#cdk-accordion-child-1 > .mat-expansion-panel-body")
+      .should("be.visible")
+      .within(() => {
+        cy.get(".anavio-account-list > .mat-mdc-tooltip-trigger")
+          .should("be.visible")
+          .within(() => {
+            cy.contains("Clovis");
+            cy.contains("10000015");
+          });
+      });
 
     // Log out
     cy.get(".mat-mdc-menu-content > :nth-child(7)")
@@ -449,9 +442,9 @@ describe("Sidebar Tests", () => {
 
   it("when collapsed, it should expand when the Anavio logo icon is clicked", () => {
     // Collapse the sidebar
-    cy.get('button > .anavio-icon').click();
+    cy.get("button > .anavio-icon").click();
 
-    cy.get('button > .anavio-icon').click();
+    cy.get("button > .anavio-icon").click();
     cy.get(".sidebar")
       .should("be.visible")
       .should(($sidebar) => {
@@ -463,8 +456,7 @@ describe("Sidebar Tests", () => {
     cy.logout();
     cy.url().should("include", "/auth/sign-in");
   });
-
-});  
+});
 
 // Custom Command for Logout
 Cypress.Commands.add("logout", () => {
