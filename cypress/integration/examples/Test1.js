@@ -3,7 +3,7 @@
 describe('Login Functionality',()=>{
 it('Valid Credentials',()=>{
 cy.visit('https://ui.anavio.ai/auth/sign-in')
-cy.wait(2000)
+cy.wait(5000)
 cy.get('#mat-input-0').type("hbadwane@vicon-security.com")
 cy.wait(2000)
 cy.get('#mat-input-1').type("Anavio@123")
