@@ -116,14 +116,3 @@ describe("People > Known People Page Tests", () => {
     cy.url().should("include", "/auth/sign-in");
   });
 });
-
-// Custom Command for Logout
-Cypress.Commands.add("logout", () => {
-  cy.get(
-    ".anavio-user-account-icon > .mat-mdc-menu-trigger > .mat-icon"
-  ).click();
-  cy.get(".mat-mdc-menu-content > :nth-child(7)").click();
-  cy.get(".mat-mdc-dialog-actions").within(() => {
-    cy.contains("Logout").click();
-  });
-});

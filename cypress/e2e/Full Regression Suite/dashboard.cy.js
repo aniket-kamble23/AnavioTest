@@ -309,22 +309,23 @@ describe("Dashboard Page Tests", () => {
       cy.get("app-camera-activity-card").should("have.length", 20);
     });
   });
+  
+  // This needs to be improved to account for future and past dates 
+  // it("should display today's date in each Camera Activity Card header", () => {
+  //   const today = new Date();
+  //   const formattedDate = `${
+  //     today.getMonth() + 1
+  //   }/${today.getDate()}/${today.getFullYear()}`;
 
-  it("should display today's date in each Camera Activity Card header", () => {
-    const today = new Date();
-    const formattedDate = `${
-      today.getMonth() + 1
-    }/${today.getDate()}/${today.getFullYear()}`;
-
-    cy.get(".camera-activity-list").within(() => {
-      cy.get("app-camera-activity-card").each(($card) => {
-        cy.wrap($card)
-          .find(".camera-activity-date-time")
-          .invoke("text")
-          .should("contain", formattedDate);
-      });
-    });
-  });
+  //   cy.get(".camera-activity-list").within(() => {
+  //     cy.get("app-camera-activity-card").each(($card) => {
+  //       cy.wrap($card)
+  //         .find(".camera-activity-date-time")
+  //         .invoke("text")
+  //         .should("contain", formattedDate);
+  //     });
+  //   });
+  // });
 
   it("should have a 3-dot menu button with correct icon in each Camera Activity Card header", () => {
     cy.get(".camera-activity-list").within(() => {
@@ -436,16 +437,5 @@ describe("Dashboard Page Tests", () => {
   it("should log out when the Log out option is clicked", () => {
     cy.logout();
     cy.url().should("include", "/auth/sign-in");
-  });
-});
-
-// Custom Command for Logout
-Cypress.Commands.add("logout", () => {
-  cy.get(
-    ".anavio-user-account-icon > .mat-mdc-menu-trigger > .mat-icon"
-  ).click();
-  cy.get(".mat-mdc-menu-content > :nth-child(7)").click();
-  cy.get(".mat-mdc-dialog-actions").within(() => {
-    cy.contains("Logout").click();
   });
 });
