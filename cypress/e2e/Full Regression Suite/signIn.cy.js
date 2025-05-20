@@ -8,18 +8,38 @@ describe("Sign In Page Tests", () => {
   });
 
   it("should display all required UI elements", () => {
-    cy.get(".header-text").contains("Sign In");
-    cy.get(".login-form > :nth-child(1)").contains("Email");
-    cy.get('[formcontrolname="loginEmail"]').should("be.visible");
-    cy.get(".login-form > :nth-child(3)").contains("Password");
-    cy.get('[formcontrolname="loginPassword"]').should("be.visible");
-    cy.get(".mat-mdc-button-touch-target").should("be.visible");
-    cy.get(".mdc-button__label").contains("Sign In");
-    cy.get(".login-footer").within(() => {
-      cy.contains("Forgot Password?");
-      cy.contains("Need an account?");
-      cy.contains("Sign Up");
+    // Background container visible
+    cy.get("app-base > .login-bg").should("be.visible");
+
+    // Card container
+    cy.get(".mat-mdc-card").within(() => {
+      // Header text
+      cy.get(".header-text").should("contain.text", "Sign In");
+
+      // Email label and input
+      cy.contains(".login-form .label", "Email").should("be.visible");
+      cy.get('[formcontrolname="loginEmail"]').should("be.visible");
+
+      // Password label and input
+      cy.contains(".login-form .label", "Password").should("be.visible");
+      cy.get('[formcontrolname="loginPassword"]').should("be.visible");
+
+      // Sign In button
+      cy.get(".mat-mdc-button-touch-target").should("be.visible");
+      cy.get(".mdc-button__label").should("contain.text", "Sign In");
+
+      // Footer links
+      cy.get(".login-footer").within(() => {
+        cy.contains("Forgot Password?").should("be.visible");
+        cy.contains("Need an account?").should("be.visible");
+        cy.contains("Sign Up").should("be.visible");
+      });
     });
+
+    // Footer
+    cy.get(".footer")
+      .contains("Copyright © Anavio 2024 | Version 1.0.15")
+      .should("be.visible");
   });
 
   it("should display validation errors when fields are empty", () => {
@@ -79,13 +99,7 @@ describe("Sign In Page Tests", () => {
       cy.get(".mdc-button__label").click();
       cy.url().should("not.include", "/auth/signin");
       cy.url().should("include", "/dashboard");
-      cy.get(
-        ".anavio-user-account-icon > .mat-mdc-menu-trigger > .mat-icon"
-      ).click();
-      cy.get(".mat-mdc-menu-content > :nth-child(7)").click();
-      cy.get(".mat-mdc-dialog-actions").within(() => {
-        cy.contains("Logout").click();
-      });
+      cy.logout();
       cy.url().should("include", "/auth/sign-in");
     });
   });
@@ -100,13 +114,7 @@ describe("Sign In Page Tests", () => {
       );
       cy.url().should("not.include", "/auth/signin");
       cy.url().should("include", "/dashboard");
-      cy.get(
-        ".anavio-user-account-icon > .mat-mdc-menu-trigger > .mat-icon"
-      ).click();
-      cy.get(".mat-mdc-menu-content > :nth-child(7)").click();
-      cy.get(".mat-mdc-dialog-actions").within(() => {
-        cy.contains("Logout").click();
-      });
+      cy.logout();
       cy.url().should("include", "/auth/sign-in");
     });
   });
