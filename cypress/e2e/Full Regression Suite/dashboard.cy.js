@@ -309,23 +309,37 @@ describe("Dashboard Page Tests", () => {
       cy.get("app-camera-activity-card").should("have.length", 20);
     });
   });
-  
-  // This needs to be improved to account for future and past dates 
-  // it("should display today's date in each Camera Activity Card header", () => {
-  //   const today = new Date();
-  //   const formattedDate = `${
-  //     today.getMonth() + 1
-  //   }/${today.getDate()}/${today.getFullYear()}`;
 
-  //   cy.get(".camera-activity-list").within(() => {
-  //     cy.get("app-camera-activity-card").each(($card) => {
-  //       cy.wrap($card)
-  //         .find(".camera-activity-date-time")
-  //         .invoke("text")
-  //         .should("contain", formattedDate);
-  //     });
-  //   });
-  // });
+  it("should display today's, yesterday's, or tomorrow's date in each Camera Activity Card header", () => {
+    const today = new Date();
+
+    const formatDate = (date) => {
+      return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    };
+
+    const todayFormatted = formatDate(today);
+
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    const yesterdayFormatted = formatDate(yesterday);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const tomorrowFormatted = formatDate(tomorrow);
+
+    const validDates = [todayFormatted, yesterdayFormatted, tomorrowFormatted];
+
+    cy.get(".camera-activity-list").within(() => {
+      cy.get("app-camera-activity-card").each(($card) => {
+        cy.wrap($card)
+          .find(".camera-activity-date-time")
+          .invoke("text")
+          .then((text) => {
+            expect(validDates.some((date) => text.includes(date))).to.be.true;
+          });
+      });
+    });
+  });
 
   it("should have a 3-dot menu button with correct icon in each Camera Activity Card header", () => {
     cy.get(".camera-activity-list").within(() => {
