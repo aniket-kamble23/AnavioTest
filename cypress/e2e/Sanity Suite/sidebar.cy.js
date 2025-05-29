@@ -116,76 +116,89 @@ describe("Sidebar Tests", () => {
     ).click();
 
     // User Account Menu
-    cy.get(".mat-mdc-menu-content").should("be.visible");
-
-    // Profile Settings
-    cy.get(".mat-mdc-menu-item.ng-star-inserted")
+    cy.get(".mat-mdc-menu-content")
       .should("be.visible")
       .within(() => {
-        cy.get(".mat-icon").should("be.visible");
-        cy.contains("Profile Settings");
-      });
-
-    // Legal
-    cy.get("#mat-expansion-panel-header-0")
-      .should("be.visible")
-      .within(() => {
-        cy.get(
-          ".mat-content > .mat-expansion-panel-header-title > .mat-icon > svg"
-        ).should("be.visible");
-        cy.contains("Legal").click();
-      });
-    cy.get("#cdk-accordion-child-0 > .mat-expansion-panel-body")
-      .should("be.visible")
-      .within(() => {
-        cy.get(".anavio-legal-list > :nth-child(1)")
+        // Profile Settings
+        cy.get(".mat-mdc-menu-item")
+          .eq(0)
           .should("be.visible")
           .within(() => {
-            cy.contains("Main Services Agreement");
+            cy.get(".mat-icon").should("be.visible");
+            cy.contains("Profile Settings");
           });
-        cy.get(".anavio-legal-list > :nth-child(2)")
+
+        // Legal
+        cy.get(".mat-accordion")
+          .eq(0)
           .should("be.visible")
           .within(() => {
-            cy.contains("Biometric Privacy Consent");
+            cy.get(
+              ".mat-content > .mat-expansion-panel-header-title > .mat-icon > svg"
+            ).should("be.visible");
+            cy.contains("Legal").click();
           });
-      });
-
-    // Help
-    cy.get(".mat-mdc-menu-content > :nth-child(3)")
-      .should("be.visible")
-      .within(() => {
-        cy.get(".mat-icon > svg").should("be.visible");
-        cy.contains("Help");
-      });
-
-    // Switch Account
-    cy.get("#mat-expansion-panel-header-1")
-      .should("be.visible")
-      .within(() => {
-        cy.get(
-          ".mat-content > .mat-expansion-panel-header-title > .mat-icon > svg"
-        ).should("be.visible");
-        cy.contains("Switch Account").click();
-      });
-    cy.get("#cdk-accordion-child-1 > .mat-expansion-panel-body")
-      .should("be.visible")
-      .within(() => {
-        cy.get(".anavio-account-list > .mat-mdc-tooltip-trigger")
+        cy.get(".anavio-legal-list")
           .should("be.visible")
           .within(() => {
-            cy.contains("Clovis");
-            cy.contains("10000015");
+            cy.get(".legal-item")
+              .eq(0)
+              .should("be.visible")
+              .within(() => {
+                cy.contains("Main Services Agreement");
+              });
+            cy.get(".legal-item")
+              .eq(1)
+              .should("be.visible")
+              .within(() => {
+                cy.contains("Biometric Privacy Consent");
+              });
+          });
+
+        // Help
+        cy.get(".mat-mdc-menu-item")
+          .eq(1)
+          .should("be.visible")
+          .within(() => {
+            cy.get(".mat-icon > svg").should("be.visible");
+            cy.contains("Help");
+          });
+
+        // Switch Account
+        cy.get(".mat-accordion")
+          .eq(1)
+          .should("be.visible")
+          .within(() => {
+            cy.get(
+              ".mat-content > .mat-expansion-panel-header-title > .mat-icon > svg"
+            ).should("be.visible");
+            cy.contains("Switch Account").click();
+          });
+        cy.get(".anavio-account-list")
+          .should("be.visible")
+          .within(() => {
+            cy.get(".account-item")
+              .eq(0)
+              .should("be.visible")
+              .within(() => {
+                cy.get(".mat-icon > svg").should("be.visible");
+                cy.get(".account-profile-img")
+                  .should("be.visible")
+                  .and("contain.text", "C");
+                cy.contains("Clovis");
+                cy.contains("10000015");
+              });
+          });
+
+        // Log out
+        cy.get(".mat-mdc-menu-item")
+          .eq(2)
+          .should("be.visible")
+          .within(() => {
+            cy.get(".mat-icon > svg").should("be.visible");
+            cy.contains("Log out");
           });
       });
-
-    // Log out
-    cy.get(".mat-mdc-menu-content > :nth-child(7)")
-      .should("be.visible")
-      .within(() => {
-        cy.get(".mat-icon > svg").should("be.visible");
-        cy.contains("Log out");
-      });
-
     // Click outside to close the menu
     cy.get("body").click(0, 0);
   });

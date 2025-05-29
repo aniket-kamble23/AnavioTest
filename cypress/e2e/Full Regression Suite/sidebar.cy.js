@@ -116,89 +116,101 @@ describe("Sidebar Tests", () => {
     ).click();
 
     // User Account Menu
-    cy.get(".mat-mdc-menu-content").should("be.visible");
-
-    // Profile Settings
-    cy.get(".mat-mdc-menu-item.ng-star-inserted")
+    cy.get(".mat-mdc-menu-content")
       .should("be.visible")
       .within(() => {
-        cy.get(".mat-icon").should("be.visible");
-        cy.contains("Profile Settings");
-      });
-
-    // Legal
-    cy.get("#mat-expansion-panel-header-0")
-      .should("be.visible")
-      .within(() => {
-        cy.get(
-          ".mat-content > .mat-expansion-panel-header-title > .mat-icon > svg"
-        ).should("be.visible");
-        cy.contains("Legal").click();
-      });
-    cy.get("#cdk-accordion-child-0 > .mat-expansion-panel-body")
-      .should("be.visible")
-      .within(() => {
-        cy.get(".anavio-legal-list > :nth-child(1)")
+        // Profile Settings
+        cy.get(".mat-mdc-menu-item")
+          .eq(0)
           .should("be.visible")
           .within(() => {
-            cy.contains("Main Services Agreement");
+            cy.get(".mat-icon").should("be.visible");
+            cy.contains("Profile Settings");
           });
-        cy.get(".anavio-legal-list > :nth-child(2)")
+
+        // Legal
+        cy.get(".mat-accordion")
+          .eq(0)
           .should("be.visible")
           .within(() => {
-            cy.contains("Biometric Privacy Consent");
+            cy.get(
+              ".mat-content > .mat-expansion-panel-header-title > .mat-icon > svg"
+            ).should("be.visible");
+            cy.contains("Legal").click();
           });
-      });
-
-    // Help
-    cy.get(".mat-mdc-menu-content > :nth-child(3)")
-      .should("be.visible")
-      .within(() => {
-        cy.get(".mat-icon > svg").should("be.visible");
-        cy.contains("Help");
-      });
-
-    // Switch Account
-    cy.get("#mat-expansion-panel-header-1")
-      .should("be.visible")
-      .within(() => {
-        cy.get(
-          ".mat-content > .mat-expansion-panel-header-title > .mat-icon > svg"
-        ).should("be.visible");
-        cy.contains("Switch Account").click();
-      });
-    cy.get("#cdk-accordion-child-1 > .mat-expansion-panel-body")
-      .should("be.visible")
-      .within(() => {
-        cy.get(".anavio-account-list > .mat-mdc-tooltip-trigger")
+        cy.get(".anavio-legal-list")
           .should("be.visible")
           .within(() => {
-            cy.contains("Clovis");
-            cy.contains("10000015");
+            cy.get(".legal-item")
+              .eq(0)
+              .should("be.visible")
+              .within(() => {
+                cy.contains("Main Services Agreement");
+              });
+            cy.get(".legal-item")
+              .eq(1)
+              .should("be.visible")
+              .within(() => {
+                cy.contains("Biometric Privacy Consent");
+              });
+          });
+
+        // Help
+        cy.get(".mat-mdc-menu-item")
+          .eq(1)
+          .should("be.visible")
+          .within(() => {
+            cy.get(".mat-icon > svg").should("be.visible");
+            cy.contains("Help");
+          });
+
+        // Switch Account
+        cy.get(".mat-accordion")
+          .eq(1)
+          .should("be.visible")
+          .within(() => {
+            cy.get(
+              ".mat-content > .mat-expansion-panel-header-title > .mat-icon > svg"
+            ).should("be.visible");
+            cy.contains("Switch Account").click();
+          });
+        cy.get(".anavio-account-list")
+          .should("be.visible")
+          .within(() => {
+            cy.get(".account-item")
+              .eq(0)
+              .should("be.visible")
+              .within(() => {
+                cy.get(".mat-icon > svg").should("be.visible");
+                cy.get(".account-profile-img")
+                  .should("be.visible")
+                  .and("contain.text", "C");
+                cy.contains("Clovis");
+                cy.contains("10000015");
+              });
+          });
+
+        // Log out
+        cy.get(".mat-mdc-menu-item")
+          .eq(2)
+          .should("be.visible")
+          .within(() => {
+            cy.get(".mat-icon > svg").should("be.visible");
+            cy.contains("Log out");
           });
       });
-
-    // Log out
-    cy.get(".mat-mdc-menu-content > :nth-child(7)")
-      .should("be.visible")
-      .within(() => {
-        cy.get(".mat-icon > svg").should("be.visible");
-        cy.contains("Log out");
-      });
-
     // Click outside to close the menu
     cy.get("body").click(0, 0);
   });
 
-  it("when expanded, it should navigate to the appropriate pages when each menu item is clicked", () => {
+  it("when expanded, it should navigate to the appropriate pages when each user account menu item is clicked", () => {
     cy.get(
       ".anavio-user-account-icon > .mat-mdc-menu-trigger > .mat-icon"
     ).click();
 
     // Profile Settings
-    cy.get(".mat-mdc-menu-item.ng-star-inserted").within(() => {
-      cy.contains("Profile Settings").click();
-    });
+    cy.get(".mat-mdc-menu-item").eq(0).click();
+
     cy.url().should("include", "/settings/profile");
 
     cy.get(
@@ -206,43 +218,35 @@ describe("Sidebar Tests", () => {
     ).click();
 
     // Legal
-    cy.get("#mat-expansion-panel-header-0").within(() => {
-      cy.contains("Legal").click();
-    });
+    cy.get(".mat-accordion").eq(0).click();
 
     // Stub window.open
     cy.window().then((win) => {
       cy.stub(win, "open").as("windowOpen");
     });
 
-    cy.get("#cdk-accordion-child-0 > .mat-expansion-panel-body").within(() => {
+    cy.get(".anavio-legal-list").within(() => {
       // Main Services Agreement
-      cy.get(".anavio-legal-list > :nth-child(1)").within(() => {
-        cy.contains("Main Services Agreement").click();
-        cy.get("@windowOpen").should(
-          "be.calledWith",
-          "https://anavio.ai/main-services-agreement"
-        );
-      });
+      cy.get(".legal-item").eq(0).click();
+      cy.get("@windowOpen").should(
+        "be.calledWith",
+        "https://anavio.ai/main-services-agreement"
+      );
 
       // Biometric Privacy Consent
-      cy.get(".anavio-legal-list > :nth-child(2)").within(() => {
-        cy.contains("Biometric Privacy Consent").click();
-        cy.get("@windowOpen").should(
-          "be.calledWith",
-          "https://anavio.ai/biometric-privacy-consent"
-        );
-      });
+      cy.get(".legal-item").eq(1).click();
+      cy.get("@windowOpen").should(
+        "be.calledWith",
+        "https://anavio.ai/biometric-privacy-consent"
+      );
     });
 
     // Help
-    cy.get(".mat-mdc-menu-content > :nth-child(3)").within(() => {
-      cy.contains("Help").click();
-      cy.get("@windowOpen").should(
-        "be.calledWith",
-        "https://help.anavio.ai/hc/en-us"
-      );
-    });
+    cy.get(".mat-mdc-menu-item").eq(1).click();
+    cy.get("@windowOpen").should(
+      "be.calledWith",
+      "https://help.anavio.ai/hc/en-us"
+    );
 
     // Click outside to close the menu
     cy.get("body").click(0, 0);
@@ -354,75 +358,137 @@ describe("Sidebar Tests", () => {
     cy.get(".mat-mdc-menu-trigger > .profile-image").click();
 
     // User Account Menu
-    cy.get(".mat-mdc-menu-content").should("be.visible");
+    cy.get(".mat-mdc-menu-content")
+      .should("be.visible")
+      .within(() => {
+        // Profile Settings
+        cy.get(".mat-mdc-menu-item")
+          .eq(0)
+          .should("be.visible")
+          .within(() => {
+            cy.get(".mat-icon").should("be.visible");
+            cy.contains("Profile Settings");
+          });
+
+        // Legal
+        cy.get(".mat-accordion")
+          .eq(0)
+          .should("be.visible")
+          .within(() => {
+            cy.get(
+              ".mat-content > .mat-expansion-panel-header-title > .mat-icon > svg"
+            ).should("be.visible");
+            cy.contains("Legal").click();
+          });
+        cy.get(".anavio-legal-list")
+          .should("be.visible")
+          .within(() => {
+            cy.get(".legal-item")
+              .eq(0)
+              .should("be.visible")
+              .within(() => {
+                cy.contains("Main Services Agreement");
+              });
+            cy.get(".legal-item")
+              .eq(1)
+              .should("be.visible")
+              .within(() => {
+                cy.contains("Biometric Privacy Consent");
+              });
+          });
+
+        // Help
+        cy.get(".mat-mdc-menu-item")
+          .eq(1)
+          .should("be.visible")
+          .within(() => {
+            cy.get(".mat-icon > svg").should("be.visible");
+            cy.contains("Help");
+          });
+
+        // Switch Account
+        cy.get(".mat-accordion")
+          .eq(1)
+          .should("be.visible")
+          .within(() => {
+            cy.get(
+              ".mat-content > .mat-expansion-panel-header-title > .mat-icon > svg"
+            ).should("be.visible");
+            cy.contains("Switch Account").click();
+          });
+        cy.get(".anavio-account-list")
+          .should("be.visible")
+          .within(() => {
+            cy.get(".account-item")
+              .eq(0)
+              .should("be.visible")
+              .within(() => {
+                cy.get(".mat-icon > svg").should("be.visible");
+                cy.get(".account-profile-img")
+                  .should("be.visible")
+                  .and("contain.text", "C");
+                cy.contains("Clovis");
+                cy.contains("10000015");
+              });
+          });
+
+        // Log out
+        cy.get(".mat-mdc-menu-item")
+          .eq(2)
+          .should("be.visible")
+          .within(() => {
+            cy.get(".mat-icon > svg").should("be.visible");
+            cy.contains("Log out");
+          });
+      });
+
+    // Click outside to close the menu
+    cy.get("body").click(0, 0);
+  });
+
+  it("when collapsed, it should navigate to the appropriate pages when each user account menu item is clicked", () => {
+    // Collapse the sidebar
+    cy.get(".sidebar-toggler").click();
+
+    cy.get(".mat-mdc-menu-trigger > .profile-image").click();
 
     // Profile Settings
-    cy.get(".mat-mdc-menu-item.ng-star-inserted")
-      .should("be.visible")
-      .within(() => {
-        cy.get(".mat-icon").should("be.visible");
-        cy.contains("Profile Settings");
-      });
+    cy.get(".mat-mdc-menu-item").eq(0).click();
+
+    cy.url().should("include", "/settings/profile");
+
+    cy.get(".mat-mdc-menu-trigger > .profile-image").click();
 
     // Legal
-    cy.get("#mat-expansion-panel-header-0")
-      .should("be.visible")
-      .within(() => {
-        cy.get(
-          ".mat-content > .mat-expansion-panel-header-title > .mat-icon > svg"
-        ).should("be.visible");
-        cy.contains("Legal").click();
-      });
-    cy.get("#cdk-accordion-child-0 > .mat-expansion-panel-body")
-      .should("be.visible")
-      .within(() => {
-        cy.get(".anavio-legal-list > :nth-child(1)")
-          .should("be.visible")
-          .within(() => {
-            cy.contains("Main Services Agreement");
-          });
-        cy.get(".anavio-legal-list > :nth-child(2)")
-          .should("be.visible")
-          .within(() => {
-            cy.contains("Biometric Privacy Consent");
-          });
-      });
+    cy.get(".mat-accordion").eq(0).click();
+
+    // Stub window.open
+    cy.window().then((win) => {
+      cy.stub(win, "open").as("windowOpen");
+    });
+
+    cy.get(".anavio-legal-list").within(() => {
+      // Main Services Agreement
+      cy.get(".legal-item").eq(0).click();
+      cy.get("@windowOpen").should(
+        "be.calledWith",
+        "https://anavio.ai/main-services-agreement"
+      );
+
+      // Biometric Privacy Consent
+      cy.get(".legal-item").eq(1).click();
+      cy.get("@windowOpen").should(
+        "be.calledWith",
+        "https://anavio.ai/biometric-privacy-consent"
+      );
+    });
 
     // Help
-    cy.get(".mat-mdc-menu-content > :nth-child(3)")
-      .should("be.visible")
-      .within(() => {
-        cy.get(".mat-icon > svg").should("be.visible");
-        cy.contains("Help");
-      });
-
-    // Switch Account
-    cy.get("#mat-expansion-panel-header-1")
-      .should("be.visible")
-      .within(() => {
-        cy.get(
-          ".mat-content > .mat-expansion-panel-header-title > .mat-icon > svg"
-        ).should("be.visible");
-        cy.contains("Switch Account").click();
-      });
-    cy.get("#cdk-accordion-child-1 > .mat-expansion-panel-body")
-      .should("be.visible")
-      .within(() => {
-        cy.get(".anavio-account-list > .mat-mdc-tooltip-trigger")
-          .should("be.visible")
-          .within(() => {
-            cy.contains("Clovis");
-            cy.contains("10000015");
-          });
-      });
-
-    // Log out
-    cy.get(".mat-mdc-menu-content > :nth-child(7)")
-      .should("be.visible")
-      .within(() => {
-        cy.get(".mat-icon > svg").should("be.visible");
-        cy.contains("Log out");
-      });
+    cy.get(".mat-mdc-menu-item").eq(1).click();
+    cy.get("@windowOpen").should(
+      "be.calledWith",
+      "https://help.anavio.ai/hc/en-us"
+    );
 
     // Click outside to close the menu
     cy.get("body").click(0, 0);
