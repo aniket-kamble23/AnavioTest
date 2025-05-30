@@ -187,7 +187,7 @@ describe("Dashboard Page Tests", () => {
       });
 
     // For the first row, verify the device name is displayed correctly
-    const validDeviceNames = ["Door 0031", "Pune Door 057"];
+    const validDeviceNames = ["Door 0002", "Door 0012", "Door 0031", "Pune Door 05", "Pune Door 57"];
 
     // Grab the first row only
     cy.get('[data-test-id="mat-door-activityList-data"]')
@@ -204,7 +204,7 @@ describe("Dashboard Page Tests", () => {
       });
 
     // For the first row, verify the zone name is displayed correctly
-    const validZoneNames = ["Clovis Offices", "MH, India"];
+    const validZoneNames = ["Clovis Offices", "Clovis Remote", "MH, India"];
 
     // Grab the first row only
     cy.get('[data-test-id="mat-door-activityList-data"]')
@@ -412,6 +412,10 @@ describe("Dashboard Page Tests", () => {
       "Camera 0009-Hub 2898",
       "Camera 0010-Hub 2859",
       "Camera 0011-Hub 2806",
+      "Camera 1091-Hub 1363",
+      "Camera 1111-Hub 1363",
+      "Camera 1129-Hub 1363",
+      "Camera 1156-Hub 1363",
     ];
 
     cy.get(".camera-activity-list").within(() => {
