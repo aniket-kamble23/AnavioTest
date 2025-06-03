@@ -132,13 +132,34 @@ describe("Dashboard Page Tests", () => {
       .first()
       .within(() => {
         cy.get(".mat-column-fullName").should("not.be.empty");
-        cy.get(".mat-column-accessResult").should("not.be.empty");
         cy.get(".mat-column-time").should("not.be.empty");
         cy.get(".mat-column-deviceName").should("not.be.empty");
         cy.get(".mat-column-zoneName").should("not.be.empty");
         cy.get(".mat-column-siteName").should("not.be.empty");
-        // cy.get('.mat-column-workFlow').should('not.be.empty');
         cy.get(".mat-column-hasVideo button").should("exist");
+
+        // Check accessResult first and capture its value
+        cy.get(".mat-column-accessResult")
+          .invoke("text")
+          .then((accessResult) => {
+            const trimmedAccessResult = accessResult.trim();
+            expect(trimmedAccessResult).to.not.be.empty;
+
+            // Now check workFlow based on accessResult value
+            cy.get(".mat-column-workFlow")
+              .invoke("text")
+              .then((workflowText) => {
+                const trimmedWorkflowText = workflowText.trim();
+
+                cy.wrap(trimmedAccessResult).should((result) => {
+                  if (result === "Doorbell") {
+                    expect(trimmedWorkflowText).to.be.empty;
+                  } else {
+                    expect(trimmedWorkflowText).to.not.be.empty;
+                  }
+                });
+              });
+          });
       });
 
     // For the first row, verify the access result is displayed correctly
@@ -187,7 +208,13 @@ describe("Dashboard Page Tests", () => {
       });
 
     // For the first row, verify the device name is displayed correctly
-    const validDeviceNames = ["Door 0002", "Door 0012", "Door 0031", "Pune Door 05", "Pune Door 57"];
+    const validDeviceNames = [
+      "Door 0002",
+      "Door 0012",
+      "Door 0031",
+      "Pune Door 05",
+      "Pune Door 57",
+    ];
 
     // Grab the first row only
     cy.get('[data-test-id="mat-door-activityList-data"]')
