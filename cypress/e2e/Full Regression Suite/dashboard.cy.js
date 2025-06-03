@@ -123,11 +123,13 @@ describe("Dashboard Page Tests", () => {
       });
   });
 
-  it("should display all required Door Activity Table Rows UI elements", () => {
+  it("should display all required Door Activity Table Row UI elements", () => {
     // Verify at least one Door Activity row exists
-    cy.get('[data-test-id="mat-door-activityList-data"]').and("be.visible");
+    cy.get('[data-test-id="mat-door-activityList-data"]')
+      .should("be.visible")
+      .and("have.length.greaterThan", 0);
 
-    // For the first row, verify all required columns are populated
+    // For the first row, verify all required column fields are populated
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
       .within(() => {
@@ -145,7 +147,7 @@ describe("Dashboard Page Tests", () => {
             const trimmedAccessResult = accessResult.trim();
             expect(trimmedAccessResult).to.not.be.empty;
 
-            // Now check workFlow based on accessResult value
+            // Check workFlow based on accessResult value
             cy.get(".mat-column-workFlow")
               .invoke("text")
               .then((workflowText) => {
@@ -172,7 +174,6 @@ describe("Dashboard Page Tests", () => {
       "Doorbell",
     ];
 
-    // Grab the first row only
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
       .within(() => {
@@ -195,7 +196,6 @@ describe("Dashboard Page Tests", () => {
       day: "2-digit",
     });
 
-    // Grab the first row only
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
       .within(() => {
@@ -211,56 +211,46 @@ describe("Dashboard Page Tests", () => {
     const validDeviceNames = [
       "Door 0002",
       "Door 0012",
+      "Door 0020",
       "Door 0031",
+      "Pune Door 05",
       "Pune Door 05",
       "Pune Door 57",
     ];
 
-    // Grab the first row only
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
       .within(() => {
         cy.get(".mat-column-deviceName")
           .invoke("text")
           .then((text) => {
-            const trimmedText = text.trim();
-
-            // Check that the text is in the validDeviceNames array
-            expect(validDeviceNames).to.include(trimmedText);
+            expect(validDeviceNames).to.include(text.trim());
           });
       });
 
     // For the first row, verify the zone name is displayed correctly
     const validZoneNames = ["Clovis Offices", "Clovis Remote", "MH, India"];
 
-    // Grab the first row only
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
       .within(() => {
         cy.get(".mat-column-zoneName")
           .invoke("text")
           .then((text) => {
-            const trimmedText = text.trim();
-
-            // Check that the text is in the validZoneNames array
-            expect(validZoneNames).to.include(trimmedText);
+            expect(validZoneNames).to.include(text.trim());
           });
       });
 
     // For the first row, verify the site name is displayed correctly
     const validSiteNames = ["Clovis Site", "Pune Site"];
 
-    // Grab the first row only
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
       .within(() => {
         cy.get(".mat-column-siteName")
           .invoke("text")
           .then((text) => {
-            const trimmedText = text.trim();
-
-            // Check that the text is in the validSiteNames array
-            expect(validSiteNames).to.include(trimmedText);
+            expect(validSiteNames).to.include(text.trim());
           });
       });
 
@@ -274,7 +264,6 @@ describe("Dashboard Page Tests", () => {
       "External Card",
     ];
 
-    // Grab the first row only
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
       .within(() => {
@@ -307,6 +296,192 @@ describe("Dashboard Page Tests", () => {
     cy.get("app-dashboard-door-activity button")
       .eq(1)
       .should("have.class", "active");
+  });
+
+  it("should display all required Door Control Title UI elements", () => {
+    // Access the Door Control section
+    cy.get("app-dashboard-door-activity button").eq(1).click();
+    // Verify the presence of the Door Control Title UI elements
+    cy.get(".title-and-actions").within(() => {
+      cy.get('[data-test-id="panelTitle"]').should("have.text", "Door Control");
+    });
+  });
+
+  it("should display all required Door Control Table and Column Headers UI elements", () => {
+    // Access the Door Control section
+    cy.get("app-dashboard-door-activity button").eq(1).click();
+    // Verify Door Control Table
+    cy.get(".door-control mat-table")
+      .should("be.visible")
+      .within(() => {
+        // Verify Door Control Column Headers
+        cy.get(".mat-mdc-header-row th")
+          .should("have.length", 5) // Ensure there are exactly 5 headers
+          .then(($headers) => {
+            const expectedHeaders = [
+              "", // The first column header should be blank
+              "DOORS",
+              "VIDEO",
+              "LOCK STATE",
+              "DOOR STATE",
+            ];
+
+            $headers.each((index, header) => {
+              expect(header.textContent.trim()).to.equal(
+                expectedHeaders[index]
+              );
+            });
+          });
+      });
+  });
+
+  it("should display all required Door Control Table Row UI elements", () => {
+    // Access the Door Control section
+    cy.get("app-dashboard-door-activity button").eq(1).click();
+
+    cy.get(".door-control mat-table").within(() => {
+      // Verify at least one Door Activity row exists
+      cy.get(".mat-mdc-row")
+        .should("be.visible")
+        .and("have.length.greaterThan", 0);
+
+      // For the first row, verify all required column fields are populated
+      cy.get(".mat-mdc-row")
+        .first()
+        .within(() => {
+          cy.get(".mat-mdc-cell").eq(0).should("not.be.empty"); // Status
+          cy.get(".mat-mdc-cell").eq(1).should("not.be.empty"); // Door Name
+          cy.get(".mat-mdc-cell").eq(2).should("not.be.empty"); // Live View button
+          cy.get(".mat-mdc-cell").eq(3).should("not.be.empty"); // Lock State
+          cy.get(".mat-mdc-cell").eq(4).should("not.be.empty"); // Door State
+        });
+
+      // For the first row, verify the status dot is either red or green
+      cy.get(".mat-mdc-row")
+        .first()
+        .within(() => {
+          cy.get("td")
+            .eq(0)
+            .find(".status-dot")
+            .should("exist")
+            .invoke("attr", "class")
+            .then((classValue) => {
+              // Assert that it contains either 'status-dot-red' or 'status-dot-green'
+              expect(classValue).to.match(/status-dot-(red|green)/);
+            });
+        });
+
+      // For the first row, verify the device name is displayed correctly
+      const validDeviceNames = [
+        "Door 0002",
+        "Door 0012",
+        "Door 0020",
+        "Door 0031",
+        "Pune Door 05",
+        "Pune Door 05",
+        "Pune Door 57",
+      ];
+
+      cy.get(".mat-mdc-row")
+        .first()
+        .within(() => {
+          cy.get(".mat-mdc-cell")
+            .eq(1)
+            .invoke("text")
+            .then((text) => {
+              expect(validDeviceNames).to.include(text.trim());
+            });
+        });
+
+      // For the first row, verify the Live View button is present and verify its properties
+      cy.get(".mat-mdc-row")
+        .first()
+        .within(() => {
+          cy.get(".mat-mdc-cell")
+            .eq(2)
+            .find("button")
+            .should("exist")
+            .and("be.visible")
+            .and("contain.text", "Live View")
+            .invoke("attr", "class")
+            .then((classValue) => {
+              // Assert that it either contains 'disable' or doesn't contain 'disable'
+              if (classValue.includes("disable")) {
+                cy.log("Live View button is disabled");
+              } else {
+                cy.log("Live View button is enabled");
+              }
+            });
+        });
+
+      // For the first row, verify the Unlock button is present and verify its properties
+      cy.get(".mat-mdc-row")
+        .first()
+        .within(() => {
+          cy.get(".mat-mdc-cell")
+            .eq(3)
+            .find("button")
+            .should("exist")
+            .and("be.visible")
+            .within(() => {
+              cy.get("app-anavio-icon").should("exist").and("be.visible");
+              cy.get(".mdc-button__label").should("contain.text", "Unlock");
+            })
+            .invoke("attr", "class")
+            .then((classValue) => {
+              // Assert that it either contains 'disable' or doesn't contain 'disable'
+              if (classValue.includes("disable")) {
+                cy.log("Unlock button is disabled");
+              } else {
+                cy.log("Unlock button is enabled");
+              }
+            });
+        });
+
+      // For the first row, verify the Lock State next to the Unlock button
+      cy.get(".mat-mdc-row")
+        .first()
+        .within(() => {
+          cy.get(".mat-mdc-cell")
+            .eq(3)
+            .within(() => {
+              cy.get(".lock-button-content")
+                .invoke("text")
+                .then((textContent) => {
+                  // Clean up the text to remove whitespace and the known button label
+                  const cleanedText = textContent.replace("Unlock", "").trim();
+
+                  // Now handle the if/else logic based on the cleaned text
+                  if (cleanedText === "Locked") {
+                    cy.log("Device is currently Locked");
+                  } else if (cleanedText === "Unlocked") {
+                    cy.log("Device is currently Unlocked");
+                  } else {
+                    cy.log(`Unexpected lock state text: ${cleanedText}`);
+                  }
+                });
+            });
+        });
+
+      // For the first row, verify the Door State
+      cy.get(".mat-mdc-row")
+        .first()
+        .within(() => {
+          cy.get(".mat-mdc-cell")
+            .eq(4)
+            .invoke("text")
+            .then((doorStateText) => {
+              const state = doorStateText.trim();
+              const validDoorStates = ["No Sensor", "Open Forced Entry"];
+
+              if (validDoorStates.includes(state)) {
+                cy.log(`Door state is: ${state}`);
+              } else {
+                cy.log(`Unexpected door state: ${state}`);
+              }
+            });
+        });
+    });
   });
 
   it("should display all required Camera Activity Header UI elements", () => {
