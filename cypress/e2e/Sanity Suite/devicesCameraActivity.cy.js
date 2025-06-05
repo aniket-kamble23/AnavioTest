@@ -144,6 +144,170 @@ describe("Devices > Camera Activity Page Tests", () => {
     });
   });
 
+  it("should display 20 required Camera Activity Cards UI elements", () => {
+    // Verify Camera Activity List
+    cy.get(".camera-activity-list").within(() => {
+      // Verify the number of camera activity cards
+      cy.get("app-camera-activity-card").should("have.length", 20);
+    });
+  });
+
+  it("should display today's, yesterday's, or tomorrow's date in each Camera Activity Card header", () => {
+    const today = new Date();
+
+    const formatDate = (date) => {
+      return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    };
+
+    const todayFormatted = formatDate(today);
+
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    const yesterdayFormatted = formatDate(yesterday);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const tomorrowFormatted = formatDate(tomorrow);
+
+    const validDates = [todayFormatted, yesterdayFormatted, tomorrowFormatted];
+
+    cy.get(".camera-activity-list").within(() => {
+      cy.get("app-camera-activity-card").each(($card) => {
+        cy.wrap($card)
+          .find(".camera-activity-date-time")
+          .invoke("text")
+          .then((text) => {
+            expect(validDates.some((date) => text.includes(date))).to.be.true;
+          });
+      });
+    });
+  });
+
+  it("should have a 3-dot menu button with correct icon in each Camera Activity Card header", () => {
+    cy.get(".camera-activity-list").within(() => {
+      cy.get("app-camera-activity-card").each(($card) => {
+        cy.wrap($card)
+          .find("button.menu-button")
+          .should("exist")
+          .within(() => {
+            cy.get("mat-icon")
+              .should("have.attr", "data-mat-icon-name", "more-vertical")
+              .within(() => {
+                cy.get("svg").should("exist");
+              });
+          });
+      });
+    });
+  });
+
+  it("should display options with icons in the first Camera Activity Card 3-dot menu", () => {
+    // Open the menu on the first card
+    cy.get(".camera-activity-list")
+      .find("app-camera-activity-card")
+      .first()
+      .within(() => {
+        cy.get("button.menu-button").click();
+      });
+
+    // Wait for the menu panel to appear in the DOM
+    cy.get(".mat-mdc-menu-panel")
+      .should("be.visible")
+      .within(() => {
+        const menuItems = [
+          { name: "Play Event", index: 0 },
+          { name: "Camera History", index: 1 },
+          { name: "Download Event", index: 2 },
+          { name: "Share Event", index: 3 },
+        ];
+
+        // Loop through the menu items for both checks
+        menuItems.forEach(({ name, index }) => {
+          cy.get("button.mat-mdc-menu-item")
+            .eq(index)
+            .should("be.visible")
+            .should("contain.text", name)
+            .within(() => {
+              cy.get(".icon-container > mat-icon").should("be.visible");
+            });
+        });
+      });
+
+    // Close the menu
+    cy.get("body").click(0, 0);
+  });
+
+  it("should display an image in each Camera Activity Card", () => {
+    cy.get(".camera-activity-list").within(() => {
+      cy.get("app-camera-activity-card").each(($card) => {
+        cy.wrap($card).within(() => {
+          cy.get("img.camera-activity-image").should("exist");
+        });
+      });
+    });
+  });
+
+  it("should display a site name and camera name in each Camera Activity Card footer", () => {
+    const validSiteNames = ["Clovis Site", "Pune Site"];
+    const validCameraNames = [
+      "Camera 0009-Hub 2898",
+      "Camera 0010-Hub 2859",
+      "Camera 0011-Hub 2806",
+      "Camera 1091-Hub 1363",
+      "Camera 1111-Hub 1363",
+      "Camera 1129-Hub 1363",
+      "Camera 1156-Hub 1363",
+    ];
+
+    cy.get(".camera-activity-list").within(() => {
+      cy.get("app-camera-activity-card").each(($card) => {
+        cy.wrap($card).within(() => {
+          // Validate Site Name
+          cy.get(".site-name")
+            .should("exist")
+            .invoke("text")
+            .then((siteName) => {
+              expect(siteName.trim().length).to.be.greaterThan(0);
+              if (validSiteNames.includes(siteName.trim())) {
+                expect(validSiteNames).to.include(siteName.trim());
+              } else {
+                cy.log(`Encountered new Site Name: ${siteName.trim()}`);
+              }
+            });
+
+          // Validate Camera Name
+          cy.get(".camera-name")
+            .should("exist")
+            .invoke("text")
+            .then((cameraName) => {
+              expect(cameraName.trim().length).to.be.greaterThan(0);
+              if (validCameraNames.includes(cameraName.trim())) {
+                expect(validCameraNames).to.include(cameraName.trim());
+              } else {
+                cy.log(`Encountered new Camera Name: ${cameraName.trim()}`);
+              }
+            });
+        });
+      });
+    });
+  });
+
+  it("should display the See More button at the bottom of the Camera Activity container", () => {
+    cy.get(".load-more-section")
+      .scrollIntoView()
+      .should("exist")
+      .and("be.visible")
+      .within(() => {
+        cy.get("button.load-more-button")
+          .scrollIntoView()
+          .should("exist")
+          .and("be.visible")
+          .and("contain", "See More")
+          .within(() => {
+            cy.get("mat-icon").find("svg").should("be.visible");
+          });
+      });
+  });
+
   it("should log out when the Log out option is clicked", () => {
     cy.logout();
     cy.url().should("include", "/auth/sign-in");

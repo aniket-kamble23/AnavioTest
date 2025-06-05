@@ -55,7 +55,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Door Activity Header UI elements", () => {
+  it("should display all required Door Activity Container Header UI elements", () => {
     // Verify Door Activity Container
     cy.get("app-dashboard-door-activity").within(() => {
       // Verify Header
@@ -123,12 +123,13 @@ describe("Dashboard Page Tests", () => {
       });
   });
 
-  it("should display all required Door Activity Table Row UI elements", () => {
-    // Verify at least one Door Activity row exists
+  it("should verify at least one Door Activity row exists", () => {
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .should("be.visible")
       .and("have.length.greaterThan", 0);
+  });
 
+  it("should display all required Door Activity Table Row UI elements", () => {
     // For the first row, verify all required column fields are populated
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
@@ -162,6 +163,21 @@ describe("Dashboard Page Tests", () => {
                 });
               });
           });
+      });
+
+    // For the first row, verify the user's full name and profile image display
+    cy.get('[data-test-id="mat-door-activityList-data"]')
+      .first()
+      .within(() => {
+        cy.get(".mat-column-fullName").within(() => {
+          cy.get("img").should("exist");
+          cy.get("span.full-name-style")
+            .should("exist")
+            .invoke("text")
+            .then((text) => {
+              expect(text.trim().length).to.be.greaterThan(0);
+            });
+        });
       });
 
     // For the first row, verify the access result is displayed correctly
@@ -484,23 +500,28 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Camera Activity Header UI elements", () => {
+  it("should display all required Camera Activity Container Header UI elements", () => {
     // Verify Camera Activity Container
     cy.get("app-expandable-camera-activity").within(() => {
-      // Verify Camera Activty Title and Actions
-      cy.get(".header-items").within(() => {
-        // Verify Title and Subtitle
-        cy.get('[data-test-id="panelTitle"]').should(
-          "have.text",
-          "Camera Activity"
-        );
-        cy.get('[data-test-id="panelSubTitle"]').should("have.text", "(Today)");
-        // Verify the button and its label
-        cy.get('[data-test-id="panelHeaderButton"] .label').should(
-          "have.text",
-          "More Activity"
-        );
-      });
+      // Verify Header
+      cy.get("mat-expansion-panel-header")
+        .should("be.visible")
+        .within(() => {
+          // Verify Title and Subtitle
+          cy.get('[data-test-id="panelTitle"]').should(
+            "have.text",
+            "Camera Activity"
+          );
+          cy.get('[data-test-id="panelSubTitle"]').should(
+            "have.text",
+            "(Today)"
+          );
+          // Verify the button and its label
+          cy.get('[data-test-id="panelHeaderButton"] .label').should(
+            "have.text",
+            "More Activity"
+          );
+        });
     });
   });
 
@@ -550,17 +571,17 @@ describe("Dashboard Page Tests", () => {
           .find("button.menu-button")
           .should("exist")
           .within(() => {
-            cy.get("mat-icon").should(
-              "have.attr",
-              "data-mat-icon-name",
-              "more-vertical"
-            );
+            cy.get("mat-icon")
+              .should("have.attr", "data-mat-icon-name", "more-vertical")
+              .within(() => {
+                cy.get("svg").should("exist");
+              });
           });
       });
     });
   });
 
-  it("should display 'Play Event' and 'Camera History' options with icons in the first Camera Activity Card menu", () => {
+  it("should display 'Play Event' and 'Camera History' options with icons in the first Camera Activity Card 3-dot menu", () => {
     // Open the menu on the first card
     cy.get(".camera-activity-list")
       .find("app-camera-activity-card")
@@ -581,16 +602,12 @@ describe("Dashboard Page Tests", () => {
         // Loop through the menu items for both checks
         menuItems.forEach(({ name, index }) => {
           cy.get("button.mat-mdc-menu-item")
-            .eq(index) // Dynamically targets Play Event (index 0) and Camera History (index 1)
+            .eq(index)
             .should("be.visible")
-            .contains(name);
-
-          // Ensure the icon exists for each item
-          cy.get(
-            `:nth-child(${
-              index + 1
-            }) > .mat-mdc-menu-item-text > .icon-container > mat-icon`
-          ).should("be.visible");
+            .should("contain.text", name)
+            .within(() => {
+              cy.get(".icon-container > mat-icon").should("be.visible");
+            });
         });
       });
 
@@ -629,7 +646,6 @@ describe("Dashboard Page Tests", () => {
             .invoke("text")
             .then((siteName) => {
               expect(siteName.trim().length).to.be.greaterThan(0);
-              // Optional: check if it's one of the known names (or allow others)
               if (validSiteNames.includes(siteName.trim())) {
                 expect(validSiteNames).to.include(siteName.trim());
               } else {
