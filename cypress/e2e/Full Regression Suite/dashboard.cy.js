@@ -361,7 +361,7 @@ describe("Dashboard Page Tests", () => {
       });
   });
 
-  it("should display all required Door Control Table Row UI elements", () => {
+  it("should verify at least one Door Control row exists", () => {
     // Access the Door Control section
     cy.get("app-dashboard-door-activity button").eq(1).click();
 
@@ -370,7 +370,14 @@ describe("Dashboard Page Tests", () => {
       cy.get(".mat-mdc-row")
         .should("be.visible")
         .and("have.length.greaterThan", 0);
+    });
+  });
 
+  it("should display all required Door Control Table Row UI elements", () => {
+    // Access the Door Control section
+    cy.get("app-dashboard-door-activity button").eq(1).click();
+
+    cy.get(".door-control mat-table").within(() => {
       // For the first row, verify all required column fields are populated
       cy.get(".mat-mdc-row")
         .first()
