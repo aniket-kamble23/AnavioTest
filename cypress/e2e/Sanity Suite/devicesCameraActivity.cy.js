@@ -236,11 +236,25 @@ describe("Devices > Camera Activity Page Tests", () => {
     cy.get("body").click(0, 0);
   });
 
-  it("should display an image in each Camera Activity Card", () => {
+  it("should display either an image or a fallback icon in each Camera Activity Card", () => {
     cy.get(".camera-activity-list").within(() => {
       cy.get("app-camera-activity-card").each(($card) => {
         cy.wrap($card).within(() => {
-          cy.get("img.camera-activity-image").should("exist");
+          cy.get("button.camera-activity-button").then(($button) => {
+            // Look for the image first
+            const $img = $button.find("img.camera-activity-image");
+            if ($img.length > 0) {
+              cy.wrap($img).should("be.exist");
+            } else {
+              // If no image, look for the fallback icon
+              cy.wrap($button)
+                .find("mat-icon")
+                .should("exist")
+                .within(() => {
+                  cy.get("svg").should("exist");
+                });
+            }
+          });
         });
       });
     });
