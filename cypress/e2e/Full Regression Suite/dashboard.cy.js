@@ -165,12 +165,24 @@ describe("Dashboard Page Tests", () => {
           });
       });
 
-    // For the first row, verify the user's full name and profile image display
+    // For the first row, verify the user's full name and either profile image or fallback icon display
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
       .within(() => {
         cy.get(".mat-column-fullName").within(() => {
-          cy.get("img").should("exist");
+          cy.get(".imageClass").then(($image) => {
+            // Look for the image first
+            const $img = $image.find("img");
+            if ($img.length) {
+              // If an image exists, assert it's visible
+              cy.wrap($img).should("be.visible");
+            } else {
+              // Otherwise, check for mat-icon svg
+              cy.get("mat-icon svg").should("exist").and("be.visible");
+            }
+          });
+
+          // Validate that the full name text is present and not empty
           cy.get("span.full-name-style")
             .should("exist")
             .invoke("text")
@@ -538,6 +550,8 @@ describe("Dashboard Page Tests", () => {
             "have.text",
             "More Activity"
           );
+          // Verify mat-expansion-indicator contains an svg and the svg is visible
+          cy.get(".mat-expansion-indicator svg").should("be.visible");
         });
     });
   });

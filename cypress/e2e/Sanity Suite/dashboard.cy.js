@@ -208,6 +208,8 @@ describe("Dashboard Page Tests", () => {
             "have.text",
             "More Activity"
           );
+          // Verify mat-expansion-indicator contains an svg and the svg is visible
+          cy.get(".mat-expansion-indicator svg").should("be.visible");
         });
     });
   });
