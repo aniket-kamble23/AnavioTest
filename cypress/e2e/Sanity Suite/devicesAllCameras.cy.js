@@ -145,6 +145,145 @@ describe("Devices > All Cameras Page Tests", () => {
     });
   });
 
+  it("should display 10 required camera thumbnail cards", () => {
+    cy.get('[data-test-id="allcameras-thumbnails"]')
+      .should("be.visible")
+      .within(() => {
+        cy.get("mat-card").should("have.length", 10);
+      });
+  });
+
+  it("should display the camera connection status in each camera thumbnail card header", () => {
+    cy.get('[data-test-id="allcameras-thumbnails"]').within(() => {
+      cy.get("mat-card").each(($card) => {
+        cy.wrap($card).within(() => {
+          cy.get("span.connection-status")
+            .should("exist")
+            .invoke("attr", "class")
+            .then((classAttr) => {
+              expect(
+                classAttr.includes("connected-camera") ||
+                  classAttr.includes("disconnected-camera"),
+                `Expected connection status to have either 'connected-camera' or 'disconnected-camera', got: ${classAttr}`
+              ).to.be.true;
+            });
+        });
+      });
+    });
+  });
+
+  it("should display the camera's name in each camera thumbnail card header", () => {
+    cy.get('[data-test-id="allcameras-thumbnails"]').within(() => {
+      cy.get("mat-card").each(($card) => {
+        cy.wrap($card).within(() => {
+          cy.get(".camera-title")
+            .should("exist")
+            .invoke("text")
+            .then((text) => {
+              expect(text.trim().length).to.be.greaterThan(0);
+            });
+        });
+      });
+    });
+  });
+
+  it("should have a 3-dot menu button with correct icon in each camera thumbnail card header", () => {
+    cy.get('[data-test-id="allcameras-thumbnails"]').within(() => {
+      cy.get("mat-card").each(($card) => {
+        cy.wrap($card)
+          .find("button.menu-button")
+          .should("exist")
+          .within(() => {
+            cy.get("mat-icon")
+              .should("have.attr", "data-mat-icon-name", "more-vertical")
+              .within(() => {
+                cy.get("svg").should("exist");
+              });
+          });
+      });
+    });
+  });
+
+  it("should display the 3-dot menu options with icons in the first camera thumbnail card header", () => {
+    // Open the menu on the first card
+    cy.get('[data-test-id="allcameras-thumbnails"] mat-card')
+      .first()
+      .within(() => {
+        cy.get("button.menu-button").click();
+      });
+
+    // Wait for the menu panel to appear in the DOM
+    cy.get(".mat-mdc-menu-panel")
+      .should("be.visible")
+      .within(() => {
+        const menuItems = [
+          { name: "Change Name", index: 0 },
+          { name: "Change Zone", index: 1 },
+          { name: "Change Analytics", index: 2 },
+          { name: "Camera Settings", index: 3 },
+          { name: "Delete Device", index: 4 },
+        ];
+
+        // Loop through the menu items for both checks
+        menuItems.forEach(({ name, index }) => {
+          cy.get("button.mat-mdc-menu-item")
+            .eq(index)
+            .should("be.visible")
+            .should("contain.text", name)
+            .within(() => {
+              cy.get(".icon-container > mat-icon > svg").should("be.visible");
+            });
+        });
+      });
+
+    // Close the menu
+    cy.get("body").click(0, 0);
+  });
+
+  it("should display either an image or a fallback icon in each camera thumbnail card", () => {
+    cy.get('[data-test-id="allcameras-thumbnails"]').within(() => {
+      cy.get("mat-card").each(($card) => {
+        cy.wrap($card).within(() => {
+          // Try to get the image with a timeout — if not found, check for fallback
+          cy.get("mat-card-content").then(($content) => {
+            cy.wrap($content)
+              .find("img")
+              .then(($img) => {
+                if ($img.length > 0) {
+                  cy.wrap($img).should("exist");
+                } else {
+                  // If no image found, assert fallback icon exists
+                  cy.wrap($content)
+                    .find("mat-icon")
+                    .should("exist")
+                    .within(() => {
+                      cy.get("svg").should("exist");
+                    });
+                }
+              });
+          });
+        });
+      });
+    });
+  });
+
+  it("should display the See More button at the bottom of the all cameras container", () => {
+    cy.get(".load-more-section")
+      .scrollIntoView()
+      .should("exist")
+      .and("be.visible")
+      .within(() => {
+        cy.get("button.load-more-button")
+          .scrollIntoView()
+          .should("exist")
+          .and("be.visible")
+          .and("contain", "See More")
+          .within(() => {
+            cy.get("mat-icon").find("svg").should("be.visible");
+          });
+      });
+  });
+
   it("should log out when the Log out option is clicked", () => {
     cy.logout();
     cy.url().should("include", "/auth/sign-in");
