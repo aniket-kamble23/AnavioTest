@@ -1,3 +1,9 @@
+import {
+  validDeviceNames,
+  validSiteNames,
+  validZoneNames,
+} from "../../support/constants";
+
 describe("Devices > All Doors Page Tests", () => {
   before(() => {
     Cypress.session.clearAllSavedSessions();
@@ -202,16 +208,6 @@ describe("Devices > All Doors Page Tests", () => {
       });
 
     // For the first row, verify the device name is displayed correctly
-    const validDeviceNames = [
-      "Door 0002",
-      "Door 0012",
-      "Door 0020",
-      "Door 0031",
-      "Pune Door 03",
-      "Pune Door 05",
-      "Pune Door 57",
-    ];
-
     cy.get("tr.mat-mdc-row")
       .first()
       .within(() => {
@@ -245,8 +241,6 @@ describe("Devices > All Doors Page Tests", () => {
       });
 
     // For the first row, verify the site name is displayed correctly
-    const validSiteNames = ["Clovis Site", "Pune Site"];
-
     cy.get("tr.mat-mdc-row")
       .first()
       .within(() => {
@@ -258,13 +252,6 @@ describe("Devices > All Doors Page Tests", () => {
       });
 
     // For the first row, verify the zone name is displayed correctly
-    const validZoneNames = [
-      "Clovis Offices",
-      "Clovis Remote",
-      "MH, India",
-      "Pune Office",
-    ];
-
     cy.get("tr.mat-mdc-row")
       .first()
       .within(() => {

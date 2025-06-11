@@ -1,3 +1,5 @@
+import { validCameraNames, validSiteNames } from "../../support/constants";
+
 describe("Devices > Camera Activity Page Tests", () => {
   before(() => {
     Cypress.session.clearAllSavedSessions();
@@ -261,17 +263,6 @@ describe("Devices > Camera Activity Page Tests", () => {
   });
 
   it("should display a site name and camera name in each Camera Activity Card footer", () => {
-    const validSiteNames = ["Clovis Site", "Pune Site"];
-    const validCameraNames = [
-      "Camera 0009-Hub 2898",
-      "Camera 0010-Hub 2859",
-      "Camera 0011-Hub 2806",
-      "Camera 1091-Hub 1363",
-      "Camera 1111-Hub 1363",
-      "Camera 1129-Hub 1363",
-      "Camera 1156-Hub 1363",
-    ];
-
     cy.get(".camera-activity-list").within(() => {
       cy.get("app-camera-activity-card").each(($card) => {
         cy.wrap($card).within(() => {

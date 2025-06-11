@@ -1,3 +1,12 @@
+import {
+  validAccessResults,
+  validCameraNames,
+  validCredentialsType,
+  validDeviceNames,
+  validSiteNames,
+  validZoneNames,
+} from "../../support/constants";
+
 describe("Dashboard Page Tests", () => {
   before(() => {
     Cypress.session.clearAllSavedSessions();
@@ -193,15 +202,6 @@ describe("Dashboard Page Tests", () => {
       });
 
     // For the first row, verify the access result is displayed correctly
-    const validAccessResults = [
-      "Granted",
-      "Denied",
-      "Denied - Not scheduled",
-      "Denied - Spoof Attack",
-      "Denied - Suspended",
-      "Doorbell",
-    ];
-
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
       .within(() => {
@@ -236,16 +236,6 @@ describe("Dashboard Page Tests", () => {
       });
 
     // For the first row, verify the device name is displayed correctly
-    const validDeviceNames = [
-      "Door 0002",
-      "Door 0012",
-      "Door 0020",
-      "Door 0031",
-      "Pune Door 03",
-      "Pune Door 05",
-      "Pune Door 57",
-    ];
-
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
       .within(() => {
@@ -257,13 +247,6 @@ describe("Dashboard Page Tests", () => {
       });
 
     // For the first row, verify the zone name is displayed correctly
-    const validZoneNames = [
-      "Clovis Offices",
-      "Clovis Remote",
-      "MH, India",
-      "Pune Office",
-    ];
-
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
       .within(() => {
@@ -275,8 +258,6 @@ describe("Dashboard Page Tests", () => {
       });
 
     // For the first row, verify the site name is displayed correctly
-    const validSiteNames = ["Clovis Site", "Pune Site"];
-
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
       .within(() => {
@@ -288,15 +269,6 @@ describe("Dashboard Page Tests", () => {
       });
 
     // For the first row, verify the credentials type is displayed correctly
-    const validCredentialsType = [
-      "Face",
-      "Card",
-      "Mobile",
-      "Cloud Key",
-      "Web",
-      "External Card",
-    ];
-
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
       .within(() => {
@@ -422,16 +394,6 @@ describe("Dashboard Page Tests", () => {
         });
 
       // For the first row, verify the device name is displayed correctly
-      const validDeviceNames = [
-        "Door 0002",
-        "Door 0012",
-        "Door 0020",
-        "Door 0031",
-        "Pune Door 03",
-        "Pune Door 05",
-        "Pune Door 57",
-      ];
-
       cy.get(".mat-mdc-row")
         .first()
         .within(() => {
@@ -676,17 +638,6 @@ describe("Dashboard Page Tests", () => {
   });
 
   it("should display a site name and camera name in each Camera Activity Card footer", () => {
-    const validSiteNames = ["Clovis Site", "Pune Site"];
-    const validCameraNames = [
-      "Camera 0009-Hub 2898",
-      "Camera 0010-Hub 2859",
-      "Camera 0011-Hub 2806",
-      "Camera 1091-Hub 1363",
-      "Camera 1111-Hub 1363",
-      "Camera 1129-Hub 1363",
-      "Camera 1156-Hub 1363",
-    ];
-
     cy.get(".camera-activity-list").within(() => {
       cy.get("app-camera-activity-card").each(($card) => {
         cy.wrap($card).within(() => {
