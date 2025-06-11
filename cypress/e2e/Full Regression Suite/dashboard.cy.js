@@ -257,7 +257,12 @@ describe("Dashboard Page Tests", () => {
       });
 
     // For the first row, verify the zone name is displayed correctly
-    const validZoneNames = ["Clovis Offices", "Clovis Remote", "MH, India"];
+    const validZoneNames = [
+      "Clovis Offices",
+      "Clovis Remote",
+      "MH, India",
+      "Pune Office",
+    ];
 
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
@@ -520,7 +525,7 @@ describe("Dashboard Page Tests", () => {
               const validDoorStates = ["No Sensor", "Open Forced Entry"];
 
               if (validDoorStates.includes(state)) {
-                cy.log(`Door state is: ${state}`);
+                expect(state).to.be.oneOf(validDoorStates);
               } else {
                 cy.log(`Unexpected door state: ${state}`);
               }

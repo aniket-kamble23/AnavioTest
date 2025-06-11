@@ -244,7 +244,7 @@ describe("Devices > All Cameras Page Tests", () => {
     cy.get('[data-test-id="allcameras-thumbnails"]').within(() => {
       cy.get("mat-card").each(($card) => {
         cy.wrap($card).within(() => {
-          // Try to get the image with a timeout — if not found, check for fallback
+          // Try to get the image, if not found, check for fallback
           cy.get("mat-card-content").then(($content) => {
             cy.wrap($content)
               .find("img")

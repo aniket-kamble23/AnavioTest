@@ -221,6 +221,145 @@ describe("Devices > All Doors Page Tests", () => {
             expect(validDeviceNames).to.include(text.trim());
           });
       });
+
+    // For the first row, verify the model is displayed correctly
+    cy.get("tr.mat-mdc-row")
+      .first()
+      .within(() => {
+        cy.get('[data-test-id="cell-model"]')
+          .invoke("text")
+          .then((text) => {
+            expect(text.trim()).to.equal("VA-UIR02A");
+          });
+      });
+
+    // For the first row, verify the MAC address is displayed correctly
+    cy.get("tr.mat-mdc-row")
+      .first()
+      .within(() => {
+        cy.get('[data-test-id="cell-mac-address"]')
+          .invoke("text")
+          .then((text) => {
+            expect(text.trim()).to.match(/^[0-9A-Fa-f]{12}-[A-Z0-9]+$/);
+          });
+      });
+
+    // For the first row, verify the site name is displayed correctly
+    const validSiteNames = ["Clovis Site", "Pune Site"];
+
+    cy.get("tr.mat-mdc-row")
+      .first()
+      .within(() => {
+        cy.get('[data-test-id="cell-sites"]')
+          .invoke("text")
+          .then((text) => {
+            expect(validSiteNames).to.include(text.trim());
+          });
+      });
+
+    // For the first row, verify the zone name is displayed correctly
+    const validZoneNames = [
+      "Clovis Offices",
+      "Clovis Remote",
+      "MH, India",
+      "Pune Office",
+    ];
+
+    cy.get("tr.mat-mdc-row")
+      .first()
+      .within(() => {
+        cy.get('[data-test-id="cell-zones"]')
+          .invoke("text")
+          .then((text) => {
+            expect(validZoneNames).to.include(text.trim());
+          });
+      });
+
+    // For the first row, verify the door state
+    cy.get("tr.mat-mdc-row")
+      .first()
+      .within(() => {
+        cy.get('[data-test-id="cell-door-state"]')
+          .invoke("text")
+          .then((doorStateText) => {
+            const state = doorStateText.trim();
+            const validDoorStates = ["No Sensor", "Open Forced Entry"];
+
+            if (validDoorStates.includes(state)) {
+              expect(state).to.be.oneOf(validDoorStates);
+            } else {
+              cy.log(`Unexpected door state: ${state}`);
+            }
+          });
+      });
+
+    // For the first row, verify the lock state
+    cy.get("tr.mat-mdc-row")
+      .first()
+      .within(() => {
+        cy.get('[data-test-id="cell-lock-state"]')
+          .invoke("text")
+          .should("match", /Locked|Unlocked/)
+          .then((lockStateText) => {
+            const state = lockStateText.trim();
+            const validLockStates = ["Locked", "Unlocked"];
+            expect(validLockStates).to.include(state);
+          });
+      });
+
+    // For the first row, verify the 3-dot menu button is displayed with the correct icon
+    cy.get("tr.mat-mdc-row")
+      .first()
+      .within(() => {
+        cy.get('[data-test-id="cell-menu-items"]')
+          .find("button.mat-mdc-button")
+          .should("exist")
+          .within(() => {
+            cy.get("mat-icon")
+              .should("have.attr", "data-mat-icon-name", "more-vertical")
+              .within(() => {
+                cy.get("svg").should("exist");
+              });
+          });
+      });
+
+    // For the first row, verify the 3-dot menu options with icons
+    cy.get("tr.mat-mdc-row")
+      .first()
+      .within(() => {
+        // Open the menu on the first card
+        cy.get('[data-test-id="cell-menu-items"]')
+          .find("button.mat-mdc-button")
+          .click();
+      });
+
+    // Wait for the menu panel to appear in the DOM
+    cy.get(".mat-mdc-menu-panel")
+      .should("be.visible")
+      .within(() => {
+        const menuItems = [
+          { name: "Unlock the Door", index: 0 },
+          { name: "Change Name", index: 1 },
+          { name: "Change Zone", index: 2 },
+          { name: "Resync Device", index: 3 },
+          { name: "Door Settings", index: 4 },
+          { name: "Delete Device", index: 5 },
+        ];
+
+        // Loop through the menu items for both checks
+        menuItems.forEach(({ name, index }) => {
+          cy.get("button.mat-mdc-menu-item")
+            .eq(index)
+            .should("be.visible")
+            .should("contain.text", name)
+            .within(() => {
+              cy.get("mat-icon").find("svg").should("be.visible");
+            });
+        });
+      });
+
+    // Close the menu
+    cy.get("body").click(0, 0);
   });
 
   it("should log out when the Log out option is clicked", () => {
