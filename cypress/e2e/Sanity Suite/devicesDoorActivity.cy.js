@@ -1,3 +1,11 @@
+import {
+  validAccessResults,
+  validDeviceNames,
+  validZoneNames,
+  validSiteNames,
+  validCredentialsType,
+} from "../../support/constants.js";
+
 describe("Devices > Door Activity Page Tests", () => {
   before(() => {
     Cypress.session.clearAllSavedSessions();
@@ -142,6 +150,248 @@ describe("Devices > Door Activity Page Tests", () => {
             });
         });
     });
+  });
+
+  it("should display all required Door Activity Table and Column Headers UI elements", () => {
+    // Verify Door Activity Table
+    cy.get('[data-test-id="mat-door-activityList"]').should("be.visible");
+
+    // Verify Door Activity Column Headers
+    cy.get('[data-test-id="mat-door-activityList-header"] th')
+      .should("have.length", 8) // Ensure there are exactly 8 headers
+      .then(($headers) => {
+        const expectedHeaders = [
+          "USER",
+          "RESULTS",
+          "DATE & TIME",
+          "DOORS",
+          "ZONE",
+          "SITES",
+          "CREDENTIALS",
+          "", // The last column header should be blank
+        ];
+
+        $headers.each((index, header) => {
+          expect(header.textContent.trim()).to.equal(expectedHeaders[index]);
+        });
+      });
+  });
+
+  it("should verify at least one Door Activity row exists", () => {
+    cy.get('[data-test-id="mat-door-activityList-data"]')
+      .should("be.visible")
+      .and("have.length.greaterThan", 0);
+  });
+
+  it("should display all required Door Activity Table Row UI elements", () => {
+    // For the first row, verify all required column fields are populated
+    cy.get('[data-test-id="mat-door-activityList-data"]')
+      .first()
+      .within(() => {
+        cy.get(".mat-column-fullName").should("not.be.empty");
+        cy.get(".mat-column-time").should("not.be.empty");
+        cy.get(".mat-column-deviceName").should("not.be.empty");
+        cy.get(".mat-column-zoneName").should("not.be.empty");
+        cy.get(".mat-column-siteName").should("not.be.empty");
+        cy.get(".mat-column-hasVideo button").should("exist");
+
+        // Check accessResult first and capture its value
+        cy.get(".mat-column-accessResult")
+          .invoke("text")
+          .then((accessResult) => {
+            const trimmedAccessResult = accessResult.trim();
+            expect(trimmedAccessResult).to.not.be.empty;
+
+            // Check workFlow based on accessResult value
+            cy.get(".mat-column-workFlow")
+              .invoke("text")
+              .then((workflowText) => {
+                const trimmedWorkflowText = workflowText.trim();
+
+                cy.wrap(trimmedAccessResult).should((result) => {
+                  if (result === "Doorbell") {
+                    expect(trimmedWorkflowText).to.be.empty;
+                  } else {
+                    expect(trimmedWorkflowText).to.not.be.empty;
+                  }
+                });
+              });
+          });
+      });
+
+    // For the first row, verify the user's full name and either profile image or fallback icon display
+    cy.get('[data-test-id="mat-door-activityList-data"]')
+      .first()
+      .within(() => {
+        cy.get(".mat-column-fullName").within(() => {
+          cy.get(".imageClass").then(($image) => {
+            // Look for the image first
+            const $img = $image.find("img");
+            if ($img.length) {
+              // If an image exists, assert it's visible
+              cy.wrap($img).should("be.visible");
+            } else {
+              // Otherwise, check for mat-icon svg
+              cy.get("mat-icon svg").should("exist").and("be.visible");
+            }
+          });
+
+          // Validate that the full name text is present and not empty
+          cy.get("span.full-name-style")
+            .should("exist")
+            .invoke("text")
+            .then((text) => {
+              expect(text.trim().length).to.be.greaterThan(0);
+            });
+        });
+      });
+
+    // For the first row, verify the access result is displayed correctly
+    cy.get('[data-test-id="mat-door-activityList-data"]')
+      .first()
+      .within(() => {
+        cy.get(".mat-column-accessResult")
+          .invoke("text")
+          .then((text) => {
+            const trimmedText = text.trim();
+
+            // Check that the text is in the validAccessResults array
+            expect(validAccessResults).to.include(trimmedText);
+          });
+      });
+
+    // For the first row, verify the date part of the timestamp
+    // Get today's date in MM/DD/YY format
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("en-US", {
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
+    });
+
+    cy.get('[data-test-id="mat-door-activityList-data"]')
+      .first()
+      .within(() => {
+        cy.get(".mat-column-time")
+          .invoke("text")
+          .then((timestamp) => {
+            const extractedDate = timestamp.trim().split(",")[0]; // Extract the date part before the comma
+            expect(extractedDate).to.equal(formattedDate); // Compare extracted date with today's date
+          });
+      });
+
+    // For the first row, verify the device name is displayed correctly
+    cy.get('[data-test-id="mat-door-activityList-data"]')
+      .first()
+      .within(() => {
+        cy.get(".mat-column-deviceName")
+          .invoke("text")
+          .then((text) => {
+            expect(validDeviceNames).to.include(text.trim());
+          });
+      });
+
+    // For the first row, verify the zone name is displayed correctly
+    cy.get('[data-test-id="mat-door-activityList-data"]')
+      .first()
+      .within(() => {
+        cy.get(".mat-column-zoneName")
+          .invoke("text")
+          .then((text) => {
+            expect(validZoneNames).to.include(text.trim());
+          });
+      });
+
+    // For the first row, verify the site name is displayed correctly
+    cy.get('[data-test-id="mat-door-activityList-data"]')
+      .first()
+      .within(() => {
+        cy.get(".mat-column-siteName")
+          .invoke("text")
+          .then((text) => {
+            expect(validSiteNames).to.include(text.trim());
+          });
+      });
+
+    // For the first row, verify the credentials type is displayed correctly
+    cy.get('[data-test-id="mat-door-activityList-data"]')
+      .first()
+      .within(() => {
+        cy.get(".mat-column-accessResult")
+          .invoke("text")
+          .then((accessResult) => {
+            const trimmedAccessResult = accessResult.trim();
+
+            cy.get(".mat-column-workFlow")
+              .invoke("text")
+              .then((workflowText) => {
+                const trimmedWorkflowText = workflowText.trim();
+
+                if (trimmedAccessResult === "Doorbell") {
+                  // If access result is "Doorbell", workflow should be empty
+                  expect(trimmedWorkflowText).to.be.empty;
+                } else {
+                  // Otherwise, workflow should be one of the valid credential types
+                  expect(validCredentialsType).to.include(trimmedWorkflowText);
+                }
+              });
+          });
+      });
+
+    // For the first row, verify the presence of the hasVideo icon
+    cy.get('[data-test-id="mat-door-activityList-data"]')
+      .first()
+      .within(() => {
+        cy.get(".mat-column-hasVideo")
+          .scrollIntoView()
+          .find("svg")
+          .should("be.visible");
+      });
+  });
+
+  it("should display Door Activity table pagination", () => {
+    cy.get(".mat-mdc-paginator-container")
+      .should("be.visible")
+      .within(() => {
+        // Verify the Results per page dropdown text
+        cy.get(".mat-mdc-paginator-page-size-label")
+          .should("be.visible")
+          .and("contain.text", "Results");
+        // Verify the results per page dropdown value
+        cy.get(".mat-mdc-select-min-line")
+          .should("be.visible")
+          .and("contain.text", "30");
+        // Verify the results per page dropdown arrow icon
+        cy.get(".mat-mdc-select-arrow")
+          .should("exist")
+          .within(() => {
+            cy.get("svg").should("be.visible");
+          });
+        // Verify the previous page button
+        cy.get(".mat-mdc-paginator-navigation-previous")
+          .should("exist")
+          .and("to.have.class", "mat-mdc-button-disabled")
+          .within(() => {
+            cy.get("svg").should("be.visible");
+          });
+        // Verify at least one page button is present
+        cy.get("button.custom-paginator-page")
+          .should("exist")
+          .and("have.length.greaterThan", 0);
+        // Verify the first page button
+        cy.get("button.custom-paginator-page")
+          .first()
+          .should("be.visible")
+          .and("have.class", "custom-paginator-page-disabled")
+          .and("contain.text", "1");
+        // Verify the next page button
+        cy.get(".mat-mdc-paginator-navigation-next")
+          .should("exist")
+          .and("not.to.have.class", "mat-mdc-button-disabled")
+          .within(() => {
+            cy.get("svg").should("be.visible");
+          });
+      });
   });
 
   it("should log out when the Log out option is clicked", () => {

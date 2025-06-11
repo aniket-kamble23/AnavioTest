@@ -349,6 +349,50 @@ describe("Devices > All Doors Page Tests", () => {
     cy.get("body").click(0, 0);
   });
 
+  it("should display Door Activity table pagination", () => {
+    cy.get(".mat-mdc-paginator-container")
+      .should("be.visible")
+      .within(() => {
+        // Verify the Results per page dropdown text
+        cy.get(".mat-mdc-paginator-page-size-label")
+          .should("be.visible")
+          .and("contain.text", "Results");
+        // Verify the results per page dropdown value
+        cy.get(".mat-mdc-select-min-line")
+          .should("be.visible")
+          .and("contain.text", "10");
+        // Verify the results per page dropdown arrow icon
+        cy.get(".mat-mdc-select-arrow")
+          .should("exist")
+          .within(() => {
+            cy.get("svg").should("be.visible");
+          });
+        // Verify the previous page button
+        cy.get(".mat-mdc-paginator-navigation-previous")
+          .should("exist")
+          .and("to.have.class", "mat-mdc-button-disabled")
+          .within(() => {
+            cy.get("svg").should("be.visible");
+          });
+        // Verify at least one page button is present
+        cy.get("button.custom-paginator-page")
+          .should("exist")
+          .and("have.length.greaterThan", 0);
+        // Verify the first page button
+        cy.get("button.custom-paginator-page")
+          .first()
+          .should("be.visible")
+          .and("have.class", "custom-paginator-page-disabled")
+          .and("contain.text", "1");
+        // Verify the next page button
+        cy.get(".mat-mdc-paginator-navigation-next")
+          .should("exist")
+          .within(() => {
+            cy.get("svg").should("be.visible");
+          });
+      });
+  });
+
   it("should log out when the Log out option is clicked", () => {
     cy.logout();
     cy.url().should("include", "/auth/sign-in");
