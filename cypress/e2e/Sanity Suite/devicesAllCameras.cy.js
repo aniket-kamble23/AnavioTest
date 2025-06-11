@@ -1,3 +1,5 @@
+import { validCameraNames } from "../../support/constants";
+
 describe("Devices > All Cameras Page Tests", () => {
   before(() => {
     Cypress.session.clearAllSavedSessions();
@@ -179,8 +181,13 @@ describe("Devices > All Cameras Page Tests", () => {
           cy.get(".camera-title")
             .should("exist")
             .invoke("text")
-            .then((text) => {
-              expect(text.trim().length).to.be.greaterThan(0);
+            .then((cameraName) => {
+              expect(cameraName.trim().length).to.be.greaterThan(0);
+              if (validCameraNames.includes(cameraName.trim())) {
+                expect(validCameraNames).to.include(cameraName.trim());
+              } else {
+                cy.log(`Encountered new camera name: ${cameraName.trim()}`);
+              }
             });
         });
       });
