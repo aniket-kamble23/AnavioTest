@@ -25,9 +25,7 @@ describe("Devices > All Doors Page Tests", () => {
         .should("be.visible")
         .find("mat-icon > svg")
         .should("be.visible");
-      cy.get(".anavio-header-title")
-        .should("be.visible")
-        .contains("All Doors");
+      cy.get(".anavio-header-title").should("be.visible").contains("All Doors");
       cy.get(".breadcrumb-home-icon")
         .should("be.visible")
         .find("mat-icon > svg")
@@ -132,6 +130,97 @@ describe("Devices > All Doors Page Tests", () => {
             });
         });
     });
+  });
+
+  it("should display All Doors Table and Column Headers", () => {
+    // Verify All Doors Table
+    cy.get('[data-test-id="mat-door-List"]').should("be.visible");
+
+    // Verify All Doors Column Headers
+    cy.get("tr[mat-header-row] th")
+      .should("have.length", 10)
+      .then(($headers) => {
+        const expectedHeaders = [
+          "", // The first column header should be blank
+          "DOOR NAME",
+          "MODEL",
+          "MAC ADDRESS - SERIAL #",
+          "SITES",
+          "ZONES",
+          "STATUS",
+          "DOOR STATE",
+          "LOCK STATE",
+          "", // The last column header should be blank
+        ];
+        $headers.each((index, header) => {
+          expect(header.textContent.trim()).to.equal(expectedHeaders[index]);
+        });
+      });
+  });
+
+  it("should verify at least one All Doors row exists", () => {
+    cy.get("tr.mat-mdc-row")
+      .should("be.visible")
+      .and("have.length.greaterThan", 0);
+  });
+
+  it("should display All Door table row elements", () => {
+    // For the first row, verify all column fields are populated
+    cy.get("tr.mat-mdc-row")
+      .first()
+      .within(() => {
+        cy.get("td.mat-mdc-cell").eq(0).should("not.be.empty");
+        cy.get('[data-test-id="cell-door-name"]').should("not.be.empty");
+        cy.get('[data-test-id="cell-model"]').should("not.be.empty");
+        cy.get('[data-test-id="cell-mac-address"]').should("not.be.empty");
+        cy.get('[data-test-id="cell-sites"]').should("not.be.empty");
+        cy.get('[data-test-id="cell-zones"]').should("not.be.empty");
+        cy.get('[data-test-id="cell-status"]').should("not.be.empty");
+        cy.get('[data-test-id="cell-door-state"]').should("not.be.empty");
+        cy.get('[data-test-id="cell-lock-state"]').should("not.be.empty");
+        cy.get('[data-test-id="cell-menu-items"]').should("not.be.empty");
+      });
+
+    // For the first row, verify the camera status dot is visible
+    cy.get("tr.mat-mdc-row")
+      .first()
+      .within(() => {
+        cy.get("td.mat-mdc-cell")
+          .eq(0)
+          .within(() => {
+            cy.get(".status-dot")
+              .should("exist")
+              .invoke("attr", "class")
+              .then((classAttr) => {
+                expect(
+                  classAttr.includes("status-dot-green") ||
+                    classAttr.includes("status-dot-red"),
+                  `Status dot should be green or red, got: ${classAttr}`
+                ).to.be.true;
+              });
+          });
+      });
+
+    // For the first row, verify the device name is displayed correctly
+    const validDeviceNames = [
+      "Door 0002",
+      "Door 0012",
+      "Door 0020",
+      "Door 0031",
+      "Pune Door 03",
+      "Pune Door 05",
+      "Pune Door 57",
+    ];
+
+    cy.get("tr.mat-mdc-row")
+      .first()
+      .within(() => {
+        cy.get('[data-test-id="cell-door-name"]')
+          .invoke("text")
+          .then((text) => {
+            expect(validDeviceNames).to.include(text.trim());
+          });
+      });
   });
 
   it("should log out when the Log out option is clicked", () => {

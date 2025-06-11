@@ -241,7 +241,7 @@ describe("Dashboard Page Tests", () => {
       "Door 0012",
       "Door 0020",
       "Door 0031",
-      "Pune Door 05",
+      "Pune Door 03",
       "Pune Door 05",
       "Pune Door 57",
     ];
@@ -422,7 +422,7 @@ describe("Dashboard Page Tests", () => {
         "Door 0012",
         "Door 0020",
         "Door 0031",
-        "Pune Door 05",
+        "Pune Door 03",
         "Pune Door 05",
         "Pune Door 57",
       ];
