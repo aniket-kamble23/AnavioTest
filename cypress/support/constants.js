@@ -38,6 +38,16 @@ export const validDeviceNames = [
   "Pune Door 57",
 ];
 
+export const validHubNames = [
+  "Hub 1582",
+  "Hub 2806",
+  "Hub 2810",
+  "Hub 2859",
+  "Pune Hub 1350",
+  "Pune Hub 2826",
+  "Quad Hub 1363",
+];
+
 export const validSiteNames = ["Clovis Site", "Pune Site"];
 
 export const validZoneNames = [

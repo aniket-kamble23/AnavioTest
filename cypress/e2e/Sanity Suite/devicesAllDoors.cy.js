@@ -262,6 +262,17 @@ describe("Devices > All Doors Page Tests", () => {
           });
       });
 
+    // For the first row, verify the status is displayed correctly
+    cy.get("tr.mat-mdc-row")
+      .first()
+      .within(() => {
+        cy.get('[data-test-id="cell-status"]')
+          .invoke("text")
+          .then((text) => {
+            expect(text.trim()).to.equal("Active");
+          });
+      });
+
     // For the first row, verify the door state
     cy.get("tr.mat-mdc-row")
       .first()
