@@ -214,8 +214,11 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
+  it("should display the Camera Activity grid", () => {
+    cy.get(".camera-activity-list").should("be.visible");
+  });
+
   it("should display 20 Camera Activity card elements", () => {
-    // Verify Camera Activity List
     cy.get(".camera-activity-list").within(() => {
       // Verify the number of camera activity cards
       cy.get("app-camera-activity-card").should("have.length", 20);
