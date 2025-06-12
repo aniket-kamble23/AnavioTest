@@ -7,7 +7,7 @@ describe("Sign In Page Tests", () => {
     cy.url().should("include", "/auth/sign-in");
   });
 
-  it("should display all required UI elements", () => {
+  it("should display the UI elements", () => {
     // Background container visible
     cy.get("app-base > .login-bg").should("be.visible");
 

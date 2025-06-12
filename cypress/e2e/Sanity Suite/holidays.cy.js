@@ -18,7 +18,7 @@ describe("Holidays Page Tests", () => {
     cy.visit("/settings/holidays");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -39,7 +39,7 @@ describe("Holidays Page Tests", () => {
     });
   });
 
-  it("should display all required Holiday Card container elements", () => {
+  it("should display the holiday card container elements", () => {
     cy.get(".add-holiday-card").within(() => {
       cy.get(".holiday-banner > span")
         .should("be.visible")
@@ -56,7 +56,7 @@ describe("Holidays Page Tests", () => {
     });
   });
 
-  it("should display all required Holidays container elements", () => {
+  it("should display the Holidays container header elements", () => {
     cy.get(".holiday-list-container").within(() => {
       cy.get(".holiday-header-wrapper").within(() => {
         cy.get("h2").should("be.visible").contains("Holidays");

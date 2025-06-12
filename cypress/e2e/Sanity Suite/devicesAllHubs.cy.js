@@ -20,7 +20,7 @@ describe("Devices > All Hubs Page Tests", () => {
     cy.visit("/devices/hubs/all-hubs");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -53,7 +53,7 @@ describe("Devices > All Hubs Page Tests", () => {
     });
   });
 
-  it("should display all required navigation bar elements", () => {
+  it("should display the navigation bar elements", () => {
     cy.get(".navigation-bar").within(() => {
       // Verify Cameras button
       cy.get('[href="/devices/cameras"] .nav-btn').as("camerasBtn");
@@ -84,7 +84,7 @@ describe("Devices > All Hubs Page Tests", () => {
     });
   });
 
-  it("should display all required All Hubs container elements", () => {
+  it("should display the All Hubs container header elements", () => {
     cy.get(".mat-mdc-card").within(() => {
       // Header section
       cy.get(".all-hub-header-wrapper")
@@ -117,7 +117,7 @@ describe("Devices > All Hubs Page Tests", () => {
     });
   });
 
-  it("should display All Hubs Table and Column Headers", () => {
+  it("should display the All Hubs table and column headers", () => {
     // Verify All Hubs Table
     cy.get('[data-test-id="all-hubs-list"]').should("be.visible");
 
@@ -147,7 +147,7 @@ describe("Devices > All Hubs Page Tests", () => {
       .and("have.length.greaterThan", 0);
   });
 
-  it("should display All Hubs table row elements", () => {
+  it("should display the All Hubs table row elements", () => {
     // For the first row, verify all column fields are populated
     cy.get("tr.mat-mdc-row")
       .first()
@@ -297,7 +297,7 @@ describe("Devices > All Hubs Page Tests", () => {
     cy.get("body").click(0, 0);
   });
 
-  it("should display Door Activity table pagination", () => {
+  it("should display the All Hubs table pagination", () => {
     cy.get(".mat-mdc-paginator-container")
       .should("be.visible")
       .within(() => {

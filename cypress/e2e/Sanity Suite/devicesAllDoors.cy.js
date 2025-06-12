@@ -24,7 +24,7 @@ describe("Devices > All Doors Page Tests", () => {
     cy.visit("/devices/doors/all-doors");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -57,7 +57,7 @@ describe("Devices > All Doors Page Tests", () => {
     });
   });
 
-  it("should display all required navigation bar elements", () => {
+  it("should display the navigation bar elements", () => {
     cy.get(".navigation-bar").within(() => {
       // Verify Cameras button
       cy.get('[href="/devices/cameras"] .nav-btn').as("camerasBtn");
@@ -88,7 +88,7 @@ describe("Devices > All Doors Page Tests", () => {
     });
   });
 
-  it("should display all required All Doors container elements", () => {
+  it("should display the All Doors container header elements", () => {
     cy.get(".mat-mdc-card").within(() => {
       // Navigation buttons
       cy.get(".navigation-buttons").within(() => {
@@ -138,7 +138,7 @@ describe("Devices > All Doors Page Tests", () => {
     });
   });
 
-  it("should display All Doors Table and Column Headers", () => {
+  it("should display the All Doors table and column headers", () => {
     // Verify All Doors Table
     cy.get('[data-test-id="mat-door-List"]').should("be.visible");
 
@@ -170,7 +170,7 @@ describe("Devices > All Doors Page Tests", () => {
       .and("have.length.greaterThan", 0);
   });
 
-  it("should display All Door table row elements", () => {
+  it("should display the All Doors table row elements", () => {
     // For the first row, verify all column fields are populated
     cy.get("tr.mat-mdc-row")
       .first()
@@ -360,7 +360,7 @@ describe("Devices > All Doors Page Tests", () => {
     cy.get("body").click(0, 0);
   });
 
-  it("should display Door Activity table pagination", () => {
+  it("should display the All Doors table pagination", () => {
     cy.get(".mat-mdc-paginator-container")
       .should("be.visible")
       .within(() => {

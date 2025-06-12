@@ -27,7 +27,7 @@ describe("Dashboard Page Tests", () => {
     cy.visit("/dashboard");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".anavio-header-title").should("be.visible").contains("Dashboard");
@@ -38,7 +38,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Status Cards UI elements", () => {
+  it("should display the Status Cards elements", () => {
     // Verify Status Cards
     cy.get(".grid").within(() => {
       // Verify the number of status cards
@@ -64,7 +64,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Door Activity Container Header UI elements", () => {
+  it("should display the Door Activity container header elements", () => {
     // Verify Door Activity Container
     cy.get("app-dashboard-door-activity").within(() => {
       // Verify Header
@@ -88,7 +88,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Door Activity Title and Actions UI elements", () => {
+  it("should display the Door Activity title and actions elements", () => {
     // Verify Door Activity Title and Actions
     cy.get(".title-and-actions").within(() => {
       // Verify Title and Subtitle
@@ -107,7 +107,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Door Activity Table and Column Headers UI elements", () => {
+  it("should display the Door Activity table and column headers", () => {
     // Verify Door Activity Table
     cy.get('[data-test-id="mat-door-activityList"]').should("be.visible");
 
@@ -138,7 +138,7 @@ describe("Dashboard Page Tests", () => {
       .and("have.length.greaterThan", 0);
   });
 
-  it("should display all required Door Activity Table Row UI elements", () => {
+  it("should display the Door Activity table row elements", () => {
     // For the first row, verify all required column fields are populated
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
@@ -313,7 +313,7 @@ describe("Dashboard Page Tests", () => {
       .should("have.class", "active");
   });
 
-  it("should display all required Door Control Title UI elements", () => {
+  it("should display the Door Control title elements", () => {
     // Access the Door Control section
     cy.get("app-dashboard-door-activity button").eq(1).click();
     // Verify the presence of the Door Control Title UI elements
@@ -322,7 +322,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Door Control Table and Column Headers UI elements", () => {
+  it("should display the Door Control table and column headers", () => {
     // Access the Door Control section
     cy.get("app-dashboard-door-activity button").eq(1).click();
     // Verify Door Control Table
@@ -362,7 +362,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Door Control Table Row UI elements", () => {
+  it("should display the Door Control table row elements", () => {
     // Access the Door Control section
     cy.get("app-dashboard-door-activity button").eq(1).click();
 
@@ -496,7 +496,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Camera Activity Container Header UI elements", () => {
+  it("should display the Camera Activity container header elements", () => {
     // Verify Camera Activity Container
     cy.get("app-expandable-camera-activity").within(() => {
       // Verify Header
@@ -523,7 +523,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display 20 required Camera Activity Cards UI elements", () => {
+  it("should display 20 Camera Activity card elements", () => {
     // Verify Camera Activity List
     cy.get(".camera-activity-list").within(() => {
       // Verify the number of camera activity cards
@@ -531,7 +531,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display today's, yesterday's, or tomorrow's date in each Camera Activity Card header", () => {
+  it("should display today's, yesterday's, or tomorrow's date in each Camera Activity card header", () => {
     const today = new Date();
 
     const formatDate = (date) => {
@@ -562,7 +562,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should have a 3-dot menu button with correct icon in each Camera Activity Card header", () => {
+  it("should have a 3-dot menu button with correct icon in each Camera Activity card header", () => {
     cy.get(".camera-activity-list").within(() => {
       cy.get("app-camera-activity-card").each(($card) => {
         cy.wrap($card)
@@ -579,7 +579,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display 'Play Event' and 'Camera History' options with icons in the first Camera Activity Card 3-dot menu", () => {
+  it("should display 'Play Event' and 'Camera History' options with icons in the first Camera Activity card 3-dot menu", () => {
     // Open the menu on the first card
     cy.get(".camera-activity-list")
       .find("app-camera-activity-card")
@@ -613,7 +613,7 @@ describe("Dashboard Page Tests", () => {
     cy.get("body").click(0, 0);
   });
 
-  it("should display either an image or a fallback icon in each Camera Activity Card", () => {
+  it("should display either an image or a fallback icon in each Camera Activity card", () => {
     cy.get(".camera-activity-list").within(() => {
       cy.get("app-camera-activity-card").each(($card) => {
         cy.wrap($card).within(() => {
@@ -637,7 +637,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display a site name and camera name in each Camera Activity Card footer", () => {
+  it("should display a site name and camera name in each Camera Activity card footer", () => {
     cy.get(".camera-activity-list").within(() => {
       cy.get("app-camera-activity-card").each(($card) => {
         cy.wrap($card).within(() => {

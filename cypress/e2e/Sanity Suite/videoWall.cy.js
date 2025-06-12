@@ -18,7 +18,7 @@ describe("Video Wall Page Tests", () => {
     cy.visit("/video-wall");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -41,7 +41,7 @@ describe("Video Wall Page Tests", () => {
     });
   });
 
-  it("should display all required Manage Device Card container elements", () => {
+  it("should display the Manage Device card container elements", () => {
     cy.get(".manage-device-card").within(() => {
       cy.get(".manage-streams > span")
         .should("be.visible")
@@ -66,7 +66,7 @@ describe("Video Wall Page Tests", () => {
     });
   });
 
-  it("should display all required Video Wall container elements", () => {
+  it("should display the Video Wall container elements", () => {
     cy.get(".wall-main-card").should("be.visible");
   });
 

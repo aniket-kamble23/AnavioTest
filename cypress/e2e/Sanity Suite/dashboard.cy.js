@@ -18,7 +18,7 @@ describe("Dashboard Page Tests", () => {
     cy.visit("/dashboard");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".anavio-header-title").should("be.visible").contains("Dashboard");
@@ -29,7 +29,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Status Cards UI elements", () => {
+  it("should display the Status Cards elements", () => {
     // Verify Status Cards
     cy.get(".grid").within(() => {
       // Verify the number of status cards
@@ -55,7 +55,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Door Activity Container Header UI elements", () => {
+  it("should display the Door Activity container header elements", () => {
     // Verify Door Activity Container
     cy.get("app-dashboard-door-activity").within(() => {
       // Verify Header
@@ -79,7 +79,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Door Activity Title and Actions UI elements", () => {
+  it("should display the Door Activity title and action elements", () => {
     // Verify Door Activity Title and Actions
     cy.get(".title-and-actions").within(() => {
       // Verify Title and Subtitle
@@ -98,7 +98,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Door Activity Table and Column Headers UI elements", () => {
+  it("should display the Door Activity table and column headers", () => {
     // Verify Door Activity Table
     cy.get('[data-test-id="mat-door-activityList"]').should("be.visible");
 
@@ -138,7 +138,7 @@ describe("Dashboard Page Tests", () => {
       .should("have.class", "active");
   });
 
-  it("should display all required Door Control Title UI elements", () => {
+  it("should display the Door Control title elements", () => {
     // Access the Door Control section
     cy.get("app-dashboard-door-activity button").eq(1).click();
     // Verify the presence of the Door Control Title UI elements
@@ -147,7 +147,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Door Control Table and Column Headers UI elements", () => {
+  it("should display the Door Control table and column headers", () => {
     // Access the Door Control section
     cy.get("app-dashboard-door-activity button").eq(1).click();
     // Verify Door Control Table
@@ -187,7 +187,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display all required Camera Activity Container Header UI elements", () => {
+  it("should display the Camera Activity container header elements", () => {
     // Verify Camera Activity Container
     cy.get("app-expandable-camera-activity").within(() => {
       // Verify Header
@@ -214,7 +214,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display 20 required Camera Activity Cards UI elements", () => {
+  it("should display 20 Camera Activity card elements", () => {
     // Verify Camera Activity List
     cy.get(".camera-activity-list").within(() => {
       // Verify the number of camera activity cards

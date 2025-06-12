@@ -26,7 +26,7 @@ describe("Devices > Door Activity Page Tests", () => {
     cy.visit("/devices/doors/door-activity");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -61,7 +61,7 @@ describe("Devices > Door Activity Page Tests", () => {
     });
   });
 
-  it("should display all required navigation bar elements", () => {
+  it("should display the navigation bar elements", () => {
     cy.get(".navigation-bar").within(() => {
       // Verify Cameras button
       cy.get('[href="/devices/cameras"] .nav-btn').as("camerasBtn");
@@ -92,7 +92,7 @@ describe("Devices > Door Activity Page Tests", () => {
     });
   });
 
-  it("should display all required Door Activity container elements", () => {
+  it("should display the Door Activity container header elements", () => {
     cy.get(".mat-mdc-card").within(() => {
       // Navigation buttons
       cy.get(".navigation-buttons").within(() => {
@@ -152,7 +152,7 @@ describe("Devices > Door Activity Page Tests", () => {
     });
   });
 
-  it("should display all required Door Activity Table and Column Headers UI elements", () => {
+  it("should display the Door Activity table and column headers", () => {
     // Verify Door Activity Table
     cy.get('[data-test-id="mat-door-activityList"]').should("be.visible");
 
@@ -183,7 +183,7 @@ describe("Devices > Door Activity Page Tests", () => {
       .and("have.length.greaterThan", 0);
   });
 
-  it("should display all required Door Activity Table Row UI elements", () => {
+  it("should display the Door Activity table row elements", () => {
     // For the first row, verify all required column fields are populated
     cy.get('[data-test-id="mat-door-activityList-data"]')
       .first()
@@ -349,7 +349,7 @@ describe("Devices > Door Activity Page Tests", () => {
       });
   });
 
-  it("should display Door Activity table pagination", () => {
+  it("should display the Door Activity table pagination", () => {
     cy.get(".mat-mdc-paginator-container")
       .should("be.visible")
       .within(() => {

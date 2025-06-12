@@ -18,7 +18,7 @@ describe("Sites Page Tests", () => {
     cy.visit("/settings/sites");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -39,7 +39,7 @@ describe("Sites Page Tests", () => {
     });
   });
 
-  it("should display all required Site Card container elements", () => {
+  it("should display the site card container elements", () => {
     cy.get(".site-card").within(() => {
       cy.get(".site-banner > span")
         .should("be.visible")
@@ -71,7 +71,7 @@ describe("Sites Page Tests", () => {
     });
   });
 
-  it("should display all required All Sites container elements", () => {
+  it("should display the All Sites container header elements", () => {
     cy.get(".sitelist-list-container").within(() => {
       cy.get(".sitelist-header-wrapper").within(() => {
         cy.get("h2").should("be.visible").contains("All Sites");

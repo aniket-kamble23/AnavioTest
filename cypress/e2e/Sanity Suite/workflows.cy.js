@@ -18,7 +18,7 @@ describe("Workflows Page Tests", () => {
     cy.visit("/settings/workflows");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -39,7 +39,7 @@ describe("Workflows Page Tests", () => {
     });
   });
 
-  it("should display all required Add Workflow Card container elements", () => {
+  it("should display the Add Workflow card container elements", () => {
     cy.get(".add-workflow-card").within(() => {
       cy.get(".workflow-banner > span")
         .should("be.visible")
@@ -58,7 +58,7 @@ describe("Workflows Page Tests", () => {
     });
   });
 
-  it("should display all required Active Workflows container elements", () => {
+  it("should display the Active Workflows container header elements", () => {
     cy.get(".workflow-list-container").within(() => {
       cy.get(".workflow-header-wrapper").within(() => {
         cy.get("h2").should("be.visible").contains("Active Workflows");

@@ -18,7 +18,7 @@ describe("People > Activity Page Tests", () => {
     cy.visit("/people/activity");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -45,7 +45,7 @@ describe("People > Activity Page Tests", () => {
     });
   });
 
-  it("should display all required navigation bar elements", () => {
+  it("should display the navigation bar elements", () => {
     cy.get(".navigation-bar").within(() => {
       // Verify Activity button
       cy.get('[href="/people/activity"] .nav-btn').as("activityBtn");
@@ -96,7 +96,7 @@ describe("People > Activity Page Tests", () => {
     });
   });
 
-  it("should display all required Activity container elements", () => {
+  it("should display the Activity container header elements", () => {
     cy.get(".mat-mdc-card").within(() => {
       cy.get(".header")
         .should("be.visible")

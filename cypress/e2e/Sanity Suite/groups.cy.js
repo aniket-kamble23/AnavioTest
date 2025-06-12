@@ -18,7 +18,7 @@ describe("Groups Page Tests", () => {
     cy.visit("/settings/groups");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -39,7 +39,7 @@ describe("Groups Page Tests", () => {
     });
   });
 
-  it("should display all required Group Card container elements", () => {
+  it("should display the group card container elements", () => {
     cy.get(".group-card").within(() => {
       cy.get(".group-banner > span")
         .should("be.visible")
@@ -56,7 +56,7 @@ describe("Groups Page Tests", () => {
     });
   });
 
-  it("should display all required All Groups container elements", () => {
+  it("should display the All Groups container header elements", () => {
     cy.get(".group-list-container").within(() => {
       cy.get(".group-header-wrapper").within(() => {
         cy.get("h2").should("be.visible").contains("All Groups");

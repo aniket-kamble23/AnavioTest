@@ -28,7 +28,7 @@ describe("Sidebar Tests", () => {
       });
   });
 
-  it("when expanded, it should display all required UI elements", () => {
+  it("when expanded, it should display the UI elements", () => {
     // Sidebar container
     cy.get(".sidebar").should("be.visible");
 
@@ -270,7 +270,7 @@ describe("Sidebar Tests", () => {
       });
   });
 
-  it("when collapsed, it should display all required UI elements", () => {
+  it("when collapsed, it should display the UI elements", () => {
     // Collapse the sidebar
     cy.get(".sidebar-toggler").click();
 

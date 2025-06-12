@@ -20,7 +20,7 @@ describe("Devices > Camera Activity Page Tests", () => {
     cy.visit("/devices/cameras/activity");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -55,7 +55,7 @@ describe("Devices > Camera Activity Page Tests", () => {
     });
   });
 
-  it("should display all required navigation bar elements", () => {
+  it("should display the navigation bar elements", () => {
     cy.get(".navigation-bar").within(() => {
       // Verify Cameras button
       cy.get('[href="/devices/cameras"] .nav-btn').as("camerasBtn");
@@ -86,7 +86,7 @@ describe("Devices > Camera Activity Page Tests", () => {
     });
   });
 
-  it("should display all required Cameras Activity container elements", () => {
+  it("should display the Cameras Activity container header elements", () => {
     cy.get(".mat-mdc-card").within(() => {
       // Navigation buttons
       cy.get(".navigation-buttons").within(() => {
@@ -146,7 +146,7 @@ describe("Devices > Camera Activity Page Tests", () => {
     });
   });
 
-  it("should display 20 required Camera Activity Cards UI elements", () => {
+  it("should display 20 Camera Activity card elements", () => {
     // Verify Camera Activity List
     cy.get(".camera-activity-list").within(() => {
       // Verify the number of camera activity cards
@@ -154,7 +154,7 @@ describe("Devices > Camera Activity Page Tests", () => {
     });
   });
 
-  it("should display today's, yesterday's, or tomorrow's date in each Camera Activity Card header", () => {
+  it("should display today's, yesterday's, or tomorrow's date in each Camera Activity card header", () => {
     const today = new Date();
 
     const formatDate = (date) => {
@@ -185,7 +185,7 @@ describe("Devices > Camera Activity Page Tests", () => {
     });
   });
 
-  it("should have a 3-dot menu button with correct icon in each Camera Activity Card header", () => {
+  it("should have a 3-dot menu button with the correct icon in each Camera Activity card header", () => {
     cy.get(".camera-activity-list").within(() => {
       cy.get("app-camera-activity-card").each(($card) => {
         cy.wrap($card)
@@ -238,7 +238,7 @@ describe("Devices > Camera Activity Page Tests", () => {
     cy.get("body").click(0, 0);
   });
 
-  it("should display either an image or a fallback icon in each Camera Activity Card", () => {
+  it("should display either an image or a fallback icon in each Camera Activity card", () => {
     cy.get(".camera-activity-list").within(() => {
       cy.get("app-camera-activity-card").each(($card) => {
         cy.wrap($card).within(() => {
@@ -262,7 +262,7 @@ describe("Devices > Camera Activity Page Tests", () => {
     });
   });
 
-  it("should display a site name and camera name in each Camera Activity Card footer", () => {
+  it("should display a site name and camera name in each Camera Activity card footer", () => {
     cy.get(".camera-activity-list").within(() => {
       cy.get("app-camera-activity-card").each(($card) => {
         cy.wrap($card).within(() => {

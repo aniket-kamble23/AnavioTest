@@ -18,7 +18,7 @@ describe("Account Page Tests", () => {
     cy.visit("/settings/account");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -39,7 +39,7 @@ describe("Account Page Tests", () => {
     });
   });
 
-  it("should display all required Account Information container elements", () => {
+  it("should display the Account Information container elements", () => {
     cy.get(
       "app-account-information > app-titled-form-card > .titled-form-card"
     ).within(() => {
@@ -49,7 +49,7 @@ describe("Account Page Tests", () => {
     });
   });
 
-  it("should display all required Analytics Settings container elements", () => {
+  it("should display the Analytics Settings container elements", () => {
     cy.get(
       "app-analytics-settings > app-titled-form-card > .titled-form-card"
     ).within(() => {
@@ -59,7 +59,7 @@ describe("Account Page Tests", () => {
     });
   });
 
-  it("should display all required Company Address container elements", () => {
+  it("should display the Company Address container elements", () => {
     cy.get('[title="Company Address"] > .titled-form-card').within(() => {
       cy.get(".card-header > .title-wrapper > .title")
         .should("be.visible")
@@ -67,7 +67,7 @@ describe("Account Page Tests", () => {
     });
   });
 
-  it("should display all required Shipping Address container elements", () => {
+  it("should display the Shipping Address container elements", () => {
     cy.get('[title="Shipping Address"] > .titled-form-card').within(() => {
       cy.get(".card-header > .title-wrapper > .title")
         .should("be.visible")

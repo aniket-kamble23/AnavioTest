@@ -18,7 +18,7 @@ describe("Directory Page Tests", () => {
     cy.visit("/settings/directory");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -39,7 +39,7 @@ describe("Directory Page Tests", () => {
     });
   });
 
-  it("should display all required Directory Card container elements", () => {
+  it("should display the directory card container elements", () => {
     cy.get(".add-directory-card").within(() => {
       cy.get(".directory-banner > span")
         .should("be.visible")
@@ -56,7 +56,7 @@ describe("Directory Page Tests", () => {
     });
   });
 
-  it("should display all required Directory container elements", () => {
+  it("should display the Directory container header elements", () => {
     cy.get(".directory-list-container").within(() => {
       cy.get(".directory-header-wrapper").within(() => {
         cy.get("h2").should("be.visible").contains("Directory");

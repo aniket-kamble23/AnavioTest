@@ -18,7 +18,7 @@ describe("Guest Schedule Page Tests", () => {
     cy.visit("/settings/schedules/guest-schedule");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -49,7 +49,7 @@ describe("Guest Schedule Page Tests", () => {
     });
   });
 
-  it("should display all required navigation bar elements", () => {
+  it("should display the navigation bar elements", () => {
     cy.get(".navigation-bar").within(() => {
       // Verify User Schedule button
       cy.get('[href="/settings/schedules/user-schedule"] .nav-btn').as(
@@ -83,7 +83,7 @@ describe("Guest Schedule Page Tests", () => {
     });
   });
 
-  it("should display all required Guests Schedule container elements", () => {
+  it("should display the Guests Schedule container header elements", () => {
     cy.get(".mat-mdc-card").within(() => {
       cy.get(".guest-schedule-header-wrapper").should("be.visible");
       cy.get("h2").contains("Guests Schedule");

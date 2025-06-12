@@ -18,7 +18,7 @@ describe("Standard Users Page Tests", () => {
     cy.visit("/settings/users/standard-users");
   });
 
-  it("should display all required Header UI elements", () => {
+  it("should display the header elements", () => {
     // Verify Header
     cy.get(".anavio-header").within(() => {
       cy.get(".back-button")
@@ -47,7 +47,7 @@ describe("Standard Users Page Tests", () => {
     });
   });
 
-  it("should display all required navigation bar elements", () => {
+  it("should display the navigation bar elements", () => {
     cy.get(".navigation-bar").within(() => {
       // Verify Standard Users button
       cy.get('[href="/settings/users/standard-users"] .nav-btn').as(
@@ -81,7 +81,7 @@ describe("Standard Users Page Tests", () => {
     });
   });
 
-  it("should display all required Standard Users container elements", () => {
+  it("should display the Standard Users container header elements", () => {
     cy.get(".mat-mdc-card").within(() => {
       cy.get(".users-header-wrapper").should("be.visible");
       cy.get("h2").contains("Standard Users");
