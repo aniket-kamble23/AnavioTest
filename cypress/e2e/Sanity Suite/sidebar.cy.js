@@ -74,9 +74,9 @@ describe("Sidebar Tests", () => {
       cy.get(selector).should("be.visible").and("contain.text", label);
 
       // Check if the associated icon is visible
-      cy.get(`${selector} > app-anavio-icon .anavio-icon .mat-icon svg`).should(
-        "be.visible"
-      );
+      cy.get(`${selector}`).within(() => {
+        cy.get("mat-icon").find("svg").should("be.visible");
+      });
     });
 
     // User Info

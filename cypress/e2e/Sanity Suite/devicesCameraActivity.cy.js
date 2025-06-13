@@ -232,7 +232,7 @@ describe("Devices > Camera Activity Page Tests", () => {
             .should("be.visible")
             .should("contain.text", name)
             .within(() => {
-              cy.get(".icon-container > mat-icon").should("be.visible");
+              cy.get("mat-icon").find("svg").should("be.visible");
             });
         });
       });

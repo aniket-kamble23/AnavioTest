@@ -111,6 +111,126 @@ describe("People > Unknown People Page Tests", () => {
     });
   });
 
+  it("should display the Unknown People grid", () => {
+    cy.get(".unknown-people-list").should("be.visible");
+  });
+
+  it("should display 25 Unknown People card elements", () => {
+    cy.get(".unknown-people-list").within(() => {
+      // Verify the number of unknown people cards
+      cy.get("app-people-person-card").should("have.length", 25);
+    });
+  });
+
+  it("should display a person icon and 3-dot menu button with the correct icon in each Unknown People card header", () => {
+    cy.get(".unknown-people-list").within(() => {
+      cy.get("app-people-person-card").each(($card) => {
+        cy.wrap($card)
+          .find("div.header")
+          .within(() => {
+            cy.get('mat-icon[data-mat-icon-name="suspend"]')
+              .should("exist")
+              .within(() => {
+                cy.get("svg").should("exist");
+              });
+            cy.get("button.menu-button")
+              .should("exist")
+              .within(() => {
+                cy.get("mat-icon")
+                  .should("have.attr", "data-mat-icon-name", "more-vertical")
+                  .within(() => {
+                    cy.get("svg").should("exist");
+                  });
+              });
+          });
+      });
+    });
+  });
+
+  it("should display options with icons in the first Unknown People card 3-dot menu", () => {
+    // Open the menu of the first card
+    cy.get(".unknown-people-list").within(() => {
+      cy.get("app-people-person-card")
+        .first()
+        .within(() => {
+          cy.get("button.menu-button").click();
+        });
+    });
+
+    // Wait for the panel to appear in the DOM
+    cy.get(".mat-mdc-menu-panel")
+      .should("be.visible")
+      .within(() => {
+        const menuItems = [
+          { name: "Add Person of Interest", index: 0 },
+          { name: "Add to Known People", index: 1 },
+        ];
+
+        // Loop through the menu items for both checks
+        menuItems.forEach(({ name, index }) => {
+          cy.get("button.mat-mdc-menu-item")
+            .eq(index)
+            .should("be.visible")
+            .should("contain.text", name)
+            .within(() => {
+              cy.get("mat-icon").find("svg").should("be.visible");
+            });
+        });
+      });
+  });
+
+  it("should display either an image or a fallback icon in each Unknown People card", () => {
+    cy.get(".unknown-people-list").within(() => {
+      cy.get("app-people-person-card").each(($card) => {
+        cy.wrap($card).within(() => {
+          cy.get("div.content > button").then(($button) => {
+            // Look for the image first
+            const $img = $button.find('img[alt="profile picture"]');
+            if ($img.length > 0) {
+              cy.wrap($img).should("exist");
+            } else {
+              // If no image, look for the fallback icon
+              cy.wrap($button)
+                .find("mat-icon")
+                .should("exist")
+                .within(() => {
+                  cy.get("svg").should("exist");
+                });
+            }
+          });
+        });
+      });
+    });
+  });
+
+  it("should display View Activity button in each Unknown People card footer", () => {
+    cy.get(".unknown-people-list").within(() => {
+      cy.get("app-people-person-card").each(($card) => {
+        cy.wrap($card)
+          .find("button.view-activity-button")
+          .should("exist")
+          .and("contain.text", "View Activity");
+      });
+    });
+  });
+
+  it("should display the See More button at the bottom of the People Activity container", () => {
+    cy.get(".load-more-section")
+      .scrollIntoView()
+      .should("exist")
+      .and("be.visible")
+      .within(() => {
+        cy.get("button.load-more-button")
+          .scrollIntoView()
+          .should("exist")
+          .and("be.visible")
+          .and("contain", "See More")
+          .within(() => {
+            cy.get("mat-icon").find("svg").should("be.visible");
+          });
+      });
+  });
+
   it("should log out when the Log out option is clicked", () => {
     cy.logout();
     cy.url().should("include", "/auth/sign-in");

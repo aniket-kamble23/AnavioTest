@@ -607,7 +607,7 @@ describe("Dashboard Page Tests", () => {
             .should("be.visible")
             .should("contain.text", name)
             .within(() => {
-              cy.get(".icon-container > mat-icon > svg").should("be.visible");
+              cy.get("mat-icon").find("svg").should("be.visible");
             });
         });
       });

@@ -123,7 +123,7 @@ describe("People > Activity Page Tests", () => {
     });
   });
 
-  it("should display the Camera Activity grid", () => {
+  it("should display the People Activity grid", () => {
     cy.get(".people-activity-list").should("be.visible");
   });
 
@@ -205,7 +205,7 @@ describe("People > Activity Page Tests", () => {
             .should("be.visible")
             .should("contain.text", name)
             .within(() => {
-              cy.get(".icon-container > mat-icon").should("be.visible");
+              cy.get("mat-icon").find("svg").should("be.visible");
             });
         });
       });
