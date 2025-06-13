@@ -1,3 +1,5 @@
+import { validCameraNames, validSiteNames } from "../../support/constants.js";
+
 describe("People > Activity Page Tests", () => {
   before(() => {
     Cypress.session.clearAllSavedSessions();
@@ -96,7 +98,7 @@ describe("People > Activity Page Tests", () => {
     });
   });
 
-  it("should display the Activity container header elements", () => {
+  it("should display the People Activity container header elements", () => {
     cy.get(".mat-mdc-card").within(() => {
       cy.get(".header")
         .should("be.visible")
@@ -119,6 +121,185 @@ describe("People > Activity Page Tests", () => {
             });
         });
     });
+  });
+
+  it("should display the Camera Activity grid", () => {
+    cy.get(".people-activity-list").should("be.visible");
+  });
+
+  it("should display 25 People Activity card elements", () => {
+    cy.get(".people-activity-list").within(() => {
+      // Verify the number of people activity cards
+      cy.get("app-people-activity-card").should("have.length", 25);
+    });
+  });
+
+  it("should display a date, time, and time zone in each People Activity card header", () => {
+    // Regular expression to match date, time, and timezone in string
+    const dateTimeRegex =
+      /^\d{1,2}\/\d{1,2}\/\d{4}, \d{1,2}:\d{2}:\d{2} (AM|PM) .+$/;
+
+    cy.get(".people-activity-list").within(() => {
+      cy.get("app-people-activity-card").each(($card) => {
+        cy.wrap($card)
+          .find(".camera-activity-date-time")
+          .invoke("text")
+          .then((text) => {
+            // Trim any whitespace and assert it matches the regex pattern
+            expect(text.trim()).to.match(dateTimeRegex);
+          });
+      });
+    });
+  });
+
+  it("should display a person icon and 3-dot menu button with the correct icon in each People Activity card header", () => {
+    cy.get(".people-activity-list").within(() => {
+      cy.get("app-people-activity-card").each(($card) => {
+        cy.wrap($card)
+          .find("div.actions")
+          .within(() => {
+            cy.get("button.person-icon")
+              .should("exist")
+              .within(() => {
+                cy.get("mat-icon > svg").should("exist");
+              });
+            cy.get("button.menu-button")
+              .should("exist")
+              .within(() => {
+                cy.get("mat-icon")
+                  .should("have.attr", "data-mat-icon-name", "more-vertical")
+                  .within(() => {
+                    cy.get("svg").should("exist");
+                  });
+              });
+          });
+      });
+    });
+  });
+
+  it("should display options with icons in the first People Activity card 3-dot menu", () => {
+    // Open the menu of the first card
+    cy.get(".people-activity-list").within(() => {
+      cy.get("app-people-activity-card")
+        .first()
+        .within(() => {
+          cy.get("button.menu-button").click();
+        });
+    });
+
+    // Wait for the panel to appear in the DOM
+    cy.get(".mat-mdc-menu-panel")
+      .should("be.visible")
+      .within(() => {
+        const menuItems = [
+          { name: "Download Image", index: 0 },
+          { name: "Not This Person", index: 1 },
+          { name: "Download Event", index: 2 },
+          { name: "Share Event", index: 3 },
+        ];
+
+        // Loop through the menu items for both checks
+        menuItems.forEach(({ name, index }) => {
+          cy.get("button.mat-mdc-menu-item")
+            .eq(index)
+            .should("be.visible")
+            .should("contain.text", name)
+            .within(() => {
+              cy.get(".icon-container > mat-icon").should("be.visible");
+            });
+        });
+      });
+
+    // Close the menu
+    cy.get("body").click(0, 0);
+  });
+
+  it("should display a pill button containing a person's name in each People Activity card", () => {
+    cy.get(".people-activity-list").within(() => {
+      cy.get("app-people-activity-card").each(($card) => {
+        cy.wrap($card)
+          .find("button.pill")
+          .should("exist")
+          .invoke("text")
+          .then((text) => {
+            expect(text.trim().length).to.be.greaterThan(0);
+          });
+      });
+    });
+  });
+
+  it("should display either an image or a fallback icon in each People Activity card", () => {
+    cy.get(".people-activity-list").within(() => {
+      cy.get("app-people-activity-card").each(($card) => {
+        cy.wrap($card).within(() => {
+          cy.get("div.image-container > button").then(($button) => {
+            // Look for the image first
+            const $img = $button.find('img[alt="Activity Image"]');
+            if ($img.length > 0) {
+              cy.wrap($img).should("exist");
+            } else {
+              // If no image, look for the fallback icon
+              cy.wrap($button)
+                .find("mat-icon")
+                .should("exist")
+                .within(() => {
+                  cy.get("svg").should("exist");
+                });
+            }
+          });
+        });
+      });
+    });
+  });
+
+  it("should display a site name and camera name in each People Activity card footer", () => {
+    cy.get(".people-activity-list").within(() => {
+      cy.get("app-people-activity-card").each(($card) => {
+        cy.wrap($card).within(() => {
+          // Validate Site Name
+          cy.get(".site-name")
+            .should("exist")
+            .invoke("text")
+            .then((siteName) => {
+              expect(siteName.trim().length).to.be.greaterThan(0);
+              if (validSiteNames.includes(siteName.trim())) {
+                expect(validSiteNames).to.include(siteName.trim());
+              } else {
+                cy.log(`Encountered new Site Name: ${siteName.trim()}`);
+              }
+            });
+
+          // Validate Camera Name
+          cy.get(".camera-name")
+            .should("exist")
+            .invoke("text")
+            .then((cameraName) => {
+              expect(cameraName.trim().length).to.be.greaterThan(0);
+              if (validCameraNames.includes(cameraName.trim())) {
+                expect(validCameraNames).to.include(cameraName.trim());
+              } else {
+                cy.log(`Encountered new Camera Name: ${cameraName.trim()}`);
+              }
+            });
+        });
+      });
+    });
+  });
+
+  it("should display the See More button at the bottom of the People Activity container", () => {
+    cy.get(".load-more-section")
+      .scrollIntoView()
+      .should("exist")
+      .within(() => {
+        cy.get("button.load-more-button")
+          .scrollIntoView()
+          .should("exist")
+          .and("be.visible")
+          .and("contain", "See More")
+          .within(() => {
+            cy.get("mat-icon").find("svg").should("be.visible");
+          });
+      });
   });
 
   it("should log out when the Log out option is clicked", () => {

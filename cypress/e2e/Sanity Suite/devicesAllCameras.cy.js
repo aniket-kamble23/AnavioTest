@@ -2,7 +2,7 @@ import {
   validCameraNames,
   validSiteNames,
   validZoneNames,
-} from "../../support/constants";
+} from "../../support/constants.js";
 
 describe("Devices > All Cameras Page Tests", () => {
   before(() => {

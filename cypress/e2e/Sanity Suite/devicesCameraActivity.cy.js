@@ -1,4 +1,4 @@
-import { validCameraNames, validSiteNames } from "../../support/constants";
+import { validCameraNames, validSiteNames } from "../../support/constants.js";
 
 describe("Devices > Camera Activity Page Tests", () => {
   before(() => {

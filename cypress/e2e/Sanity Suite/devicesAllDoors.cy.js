@@ -2,7 +2,7 @@ import {
   validDeviceNames,
   validSiteNames,
   validZoneNames,
-} from "../../support/constants";
+} from "../../support/constants.js";
 
 describe("Devices > All Doors Page Tests", () => {
   before(() => {
