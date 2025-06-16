@@ -1,4 +1,4 @@
-describe("People > Unknown People Page Tests", () => {
+describe("People > Known People > All Page Tests", () => {
   before(() => {
     Cypress.session.clearAllSavedSessions();
     cy.clearCookies();
@@ -14,8 +14,8 @@ describe("People > Unknown People Page Tests", () => {
         cy.login(credentials.validUser.email, credentials.validUser.password);
       });
     });
-    cy.log("Session restored, navigating to People > Unknown People...");
-    cy.visit("/people/unknown-people");
+    cy.log("Session restored, navigating to People > Known People...");
+    cy.visit("/people/known-people");
   });
 
   it("should display the header elements", () => {
@@ -27,7 +27,7 @@ describe("People > Unknown People Page Tests", () => {
         .should("be.visible");
       cy.get(".anavio-header-title")
         .should("be.visible")
-        .contains("Unknown People");
+        .contains("Known People");
       cy.get(".breadcrumb-home-icon")
         .should("be.visible")
         .find("mat-icon > svg")
@@ -38,10 +38,10 @@ describe("People > Unknown People Page Tests", () => {
         .contains("People");
       cy.get("app-breadcrumbs mat-icon.icon").eq(1).should("be.visible");
       cy.get(
-        'app-breadcrumbs .last-breadcrumb-item a[href="/people/unknown-people"]'
+        'app-breadcrumbs .last-breadcrumb-item a[href="/people/known-people"]'
       )
         .should("be.visible")
-        .contains("Unknown People");
+        .contains("Known People");
       cy.get(".anavio-header-actions")
         .should("be.visible")
         .find(".mat-mdc-menu-trigger > .mat-icon > svg")
@@ -81,8 +81,8 @@ describe("People > Unknown People Page Tests", () => {
         .find(".mdc-button__label")
         .should("contain", "People of Interest");
 
-      // Check that Unknown People button is the active one
-      cy.get("@unknownPeopleBtn").should("have.class", "active-route");
+      // Check that Known People button is the active one
+      cy.get("@knownPeopleBtn").should("have.class", "active-route");
 
       // Verify Search by Photo button and its icon
       cy.get(".cancel-btn")
@@ -100,35 +100,82 @@ describe("People > Unknown People Page Tests", () => {
     });
   });
 
-  it("should display the Unknown People container header elements", () => {
+  it("should display the Known People container header elements", () => {
     cy.get(".mat-mdc-card").within(() => {
       cy.get(".header")
         .should("be.visible")
         .within(() => {
-          // First div: should contain "Unknown People"
-          cy.get("div").eq(0).should("contain.text", "Unknown People");
+          // First div: should contain "Known People"
+          cy.get("div").eq(0).should("contain.text", "Known People");
         });
     });
   });
 
-  it("should display the Unknown People grid", () => {
-    cy.get(".unknown-people-list").should("be.visible");
-  });
+  it("should display the filter container elements", () => {
+    //  All, Users, Guests buttons
+    cy.get("div.type-filter")
+      .should("exist")
+      .within(() => {
+        cy.get(".mat-button-toggle")
+          .eq(0)
+          .should("exist")
+          .and("be.visible")
+          .and("contain.text", "All")
+          .and("have.class", "mat-button-toggle-checked");
+        cy.get(".mat-button-toggle")
+          .eq(1)
+          .should("exist")
+          .and("be.visible")
+          .and("contain.text", "Users");
+        cy.get(".mat-button-toggle")
+          .eq(2)
+          .should("exist")
+          .and("be.visible")
+          .and("contain.text", "Guests");
+      });
 
-  it("should display 25 Unknown People card elements", () => {
-    cy.get(".unknown-people-list").within(() => {
-      // Verify the number of unknown people cards
-      cy.get("app-people-person-card").should("have.length", 25);
+    // Search input and Sort Button
+    cy.get(".filter-wrapper").within(() => {
+      cy.get("app-searchbar")
+        .should("be.visible")
+        .within(() => {
+          cy.get("mat-icon").should("exist").find("svg").should("be.visible");
+          cy.get("input.search-input")
+            .should("be.visible")
+            .and("have.attr", "placeholder", "Search...");
+        });
+      cy.get("app-sort-menu").within(() => {
+        cy.get("button.filter-button")
+          .should("be.visible")
+          .within(() => {
+            cy.get("mat-icon").should("exist").find("svg").should("be.visible");
+            cy.get(".mdc-button__label").should("contain.text", "Sort");
+          });
+      });
     });
   });
 
-  it("should display a person icon and 3-dot menu button with the correct icon in each Unknown People card header", () => {
-    cy.get(".unknown-people-list").within(() => {
+  it("should display the Known People grid", () => {
+    cy.get(".known-people-list").should("be.visible");
+  });
+
+  it("should display between 1 and 25 Known People card elements", () => {
+    cy.get(".known-people-list").within(() => {
+      cy.get("app-people-person-card").then((cards) => {
+        const count = cards.length;
+        expect(count).to.be.gte(1);
+        expect(count).to.be.lte(25);
+      });
+    });
+  });
+
+  it("should display a person icon and 3-dot menu button with the correct icon in each Known People card header", () => {
+    cy.get(".known-people-list").within(() => {
       cy.get("app-people-person-card").each(($card) => {
         cy.wrap($card)
           .find("div.header")
           .within(() => {
-            cy.get('mat-icon[data-mat-icon-name="suspend"]')
+            cy.get('mat-icon[data-mat-icon-name="user-checkmark"]')
               .should("exist")
               .within(() => {
                 cy.get("svg").should("exist");
@@ -147,9 +194,9 @@ describe("People > Unknown People Page Tests", () => {
     });
   });
 
-  it("should display options with icons in the first Unknown People card 3-dot menu", () => {
+  it("should display an option with an icon in the first Known People card 3-dot menu", () => {
     // Open the menu of the first card
-    cy.get(".unknown-people-list").within(() => {
+    cy.get(".known-people-list").within(() => {
       cy.get("app-people-person-card")
         .first()
         .within(() => {
@@ -161,10 +208,7 @@ describe("People > Unknown People Page Tests", () => {
     cy.get(".mat-mdc-menu-panel")
       .should("be.visible")
       .within(() => {
-        const menuItems = [
-          { name: "Add Person of Interest", index: 0 },
-          { name: "Add to Known People", index: 1 },
-        ];
+        const menuItems = [{ name: "Add Person of Interest", index: 0 }];
 
         // Loop through the menu items for both checks
         menuItems.forEach(({ name, index }) => {
@@ -179,8 +223,8 @@ describe("People > Unknown People Page Tests", () => {
       });
   });
 
-  it("should display either an image or a fallback icon in each Unknown People card", () => {
-    cy.get(".unknown-people-list").within(() => {
+  it("should display either an image or a fallback icon in each Known People card", () => {
+    cy.get(".known-people-list").within(() => {
       cy.get("app-people-person-card").each(($card) => {
         cy.wrap($card).within(() => {
           cy.get("div.content > button").then(($button) => {
@@ -191,10 +235,10 @@ describe("People > Unknown People Page Tests", () => {
             } else {
               // If no image, look for the fallback icon
               cy.wrap($button)
-                .find("mat-icon")
+                .find("div.no-photo-fallback")
                 .should("exist")
                 .within(() => {
-                  cy.get("svg").should("exist");
+                  cy.get("div.user-initials").should("exist");
                 });
             }
           });
@@ -203,8 +247,22 @@ describe("People > Unknown People Page Tests", () => {
     });
   });
 
-  it("should display View Activity button in each Unknown People card footer", () => {
-    cy.get(".unknown-people-list").within(() => {
+  it("should display a person's name in each Known People card", () => {
+    cy.get(".known-people-list").within(() => {
+      cy.get("app-people-person-card").each(($card) => {
+        cy.wrap($card)
+          .find("div.person-name")
+          .should("exist")
+          .invoke("text")
+          .then((text) => {
+            expect(text.trim().length).to.be.greaterThan(0);
+          });
+      });
+    });
+  });
+
+  it("should display View Activity button in each Known People card footer", () => {
+    cy.get(".known-people-list").within(() => {
       cy.get("app-people-person-card").each(($card) => {
         cy.wrap($card)
           .find("button.view-activity-button")
@@ -214,7 +272,7 @@ describe("People > Unknown People Page Tests", () => {
     });
   });
 
-  it("should display the See More button at the bottom of the Unknown People container", () => {
+  it("should display the See More button at the bottom of the Known People container", () => {
     cy.get(".load-more-section")
       .scrollIntoView()
       .should("exist")
