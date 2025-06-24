@@ -8,15 +8,15 @@ export const validAccessResults = [
 ];
 
 export const validCameraNames = [
-  "Camera 0009-Hub 1582",
-  "Camera 0010-Hub 2859",
+  "Camera 0009-Hub 2859",
   "Camera 0011-Hub 2806",
   "Camera 1091-Hub 1363",
   "Camera 1111-Hub 1363",
   "Camera 1129-Hub 1363",
   "Camera 1156-Hub 1363",
+  "Camera 1166-Pune Hub 2826",
   "Pune NEXT 08-Hub 2826",
-  "Pune NEXT 1083-Pune Hub 1350",
+  "Pune 6789-Pune Hub 1350",
 ];
 
 export const validCredentialsType = [
@@ -39,6 +39,7 @@ export const validDeviceNames = [
 ];
 
 export const validHubNames = [
+  "Hub 1501",
   "Hub 1582",
   "Hub 2806",
   "Hub 2810",

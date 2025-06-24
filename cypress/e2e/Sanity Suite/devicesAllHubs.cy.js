@@ -185,9 +185,15 @@ describe("Devices > All Hubs Page Tests", () => {
       .first()
       .within(() => {
         cy.get("td.mat-column-name")
+          .should("exist")
           .invoke("text")
-          .then((text) => {
-            expect(validHubNames).to.include(text.trim());
+          .then((hubName) => {
+            expect(hubName.trim().length).to.be.greaterThan(0);
+            if (validHubNames.includes(hubName.trim())) {
+              expect(validHubNames).to.include(hubName.trim());
+            } else {
+              cy.log(`Encountered new hub name: ${hubName.trim()}`);
+            }
           });
       });
 

@@ -9,7 +9,7 @@ import './devicesDoorActivity.cy.js';
 import './devicesAllHubs.cy.js';
 import './peopleActivity.cy.js';
 import './peopleUnknownPeople.cy.js';
-import './peopleKnownPeople.cy.js';
+import './peopleKnownPeopleAll.cy.js';
 import './peoplePeopleOfInterest.cy.js';
 import './videoWall.cy.js';
 import './account.cy.js';

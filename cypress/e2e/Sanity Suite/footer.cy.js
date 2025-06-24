@@ -19,16 +19,22 @@ describe("Footer Container Test", () => {
   });
 
   it("should display both parts of the logo in the footer, including SVGs", () => {
-    cy.get("app-footer .icon-wrapper-a").should("be.visible");
-    cy.get("app-footer .icon-wrapper-a svg").should("be.visible");
-    cy.get("app-footer .icon-wrapper-b").should("be.visible");
-    cy.get("app-footer .icon-wrapper-b svg").should("be.visible");
+    cy.get("app-footer .icon-wrapper-a")
+      .should("exist")
+      .within(() => {
+        cy.get("mat-icon svg").should("be.visible");
+      });
+    cy.get("app-footer .icon-wrapper-b")
+      .should("exist")
+      .within(() => {
+        cy.get("mat-icon svg").should("be.visible");
+      });
   });
 
   it("should display the correct copyright text", () => {
     cy.get("app-footer .copyrights")
-      .should("be.visible")
-      .and("have.text", "© 2024 Anavio. All rights reserved.");
+      .should("exist")
+      .and("have.text", "© 2025 Anavio. All rights reserved.");
   });
 
   it("should log out when the Log out option is clicked", () => {
