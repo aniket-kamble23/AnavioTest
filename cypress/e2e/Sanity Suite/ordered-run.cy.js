@@ -22,3 +22,8 @@ import './guestSchedule.cy.js';
 import './holidays.cy.js';
 import './directory.cy.js';
 import './workflows.cy.js';
+import './reports.cy.js';
+import './accessLogs.cy.js';
+import './eventHistory.cy.js';
+import './apiKeys.cy.js';
+import './webhooks.cy.js';
