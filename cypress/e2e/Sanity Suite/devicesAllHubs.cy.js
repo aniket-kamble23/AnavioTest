@@ -272,7 +272,7 @@ describe("Devices > All Hubs Page Tests", () => {
     cy.get("tr.mat-mdc-row")
       .first()
       .within(() => {
-        // Open the menu on the first card
+        // Open the menu on the first row
         cy.get("td.mat-column-menuItems").find("button.mat-mdc-button").click();
       });
 

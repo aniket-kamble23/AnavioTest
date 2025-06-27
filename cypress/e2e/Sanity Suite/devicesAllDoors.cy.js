@@ -331,7 +331,7 @@ describe("Devices > All Doors Page Tests", () => {
     cy.get("tr.mat-mdc-row")
       .first()
       .within(() => {
-        // Open the menu on the first card
+        // Open the menu on the first row
         cy.get('[data-test-id="cell-menu-items"]')
           .find("button.mat-mdc-button")
           .click();
