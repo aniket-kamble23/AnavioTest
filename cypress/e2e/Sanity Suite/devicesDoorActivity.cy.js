@@ -123,8 +123,8 @@ describe("Devices > Door Activity Page Tests", () => {
               cy.get(".search-input")
                 .should("be.visible")
                 .and("have.attr", "placeholder", "Search...");
-              cy.get(".mat-icon")
-                .should("be.visible")
+              cy.get("mat-icon")
+                .should("exist")
                 .find("svg")
                 .should("be.visible");
             });
@@ -133,8 +133,8 @@ describe("Devices > Door Activity Page Tests", () => {
             .should("be.visible")
             .within(() => {
               cy.get(".button-label").should("contain.text", "Date & Time");
-              cy.get(".mat-icon")
-                .should("be.visible")
+              cy.get("mat-icon")
+                .should("exist")
                 .find("svg")
                 .should("be.visible");
             });
@@ -143,8 +143,8 @@ describe("Devices > Door Activity Page Tests", () => {
             .should("be.visible")
             .within(() => {
               cy.get(".label").should("contain.text", "Filter");
-              cy.get(".mat-icon")
-                .should("be.visible")
+              cy.get("mat-icon")
+                .should("exist")
                 .find("svg")
                 .should("be.visible");
             });

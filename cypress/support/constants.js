@@ -51,6 +51,15 @@ export const validHubNames = [
 
 export const validSiteNames = ["Clovis Site", "Pune Site"];
 
+export const validUserRoles = [
+  "Full Access",
+  "Manager",
+  "Supervisor",
+  "Limited Access",
+  "Dashboard",
+  "", // Blank for users with No Portal Access
+];
+
 export const validZoneNames = [
   "Clovis Offices",
   "Clovis Remote",

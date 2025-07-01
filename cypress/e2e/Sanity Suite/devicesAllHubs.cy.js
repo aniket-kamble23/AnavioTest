@@ -76,7 +76,7 @@ describe("Devices > All Hubs Page Tests", () => {
       cy.get("@hubsBtn").should("have.class", "active-route");
 
       // Verify Add Device button and its icon
-      cy.get(".add-device-btn")
+      cy.get("button.add-device-btn")
         .should("contain", "Add Device")
         .within(() => {
           cy.get("mat-icon svg").should("be.visible");
@@ -98,8 +98,8 @@ describe("Devices > All Hubs Page Tests", () => {
               cy.get(".search-input")
                 .should("be.visible")
                 .and("have.attr", "placeholder", "Search...");
-              cy.get(".mat-icon")
-                .should("be.visible")
+              cy.get("mat-icon")
+                .should("exist")
                 .find("svg")
                 .should("be.visible");
             });
@@ -108,8 +108,8 @@ describe("Devices > All Hubs Page Tests", () => {
             .should("be.visible")
             .within(() => {
               cy.get(".label").should("contain.text", "Filter");
-              cy.get(".mat-icon")
-                .should("be.visible")
+              cy.get("mat-icon")
+                .should("exist")
                 .find("svg")
                 .should("be.visible");
             });
@@ -118,7 +118,7 @@ describe("Devices > All Hubs Page Tests", () => {
   });
 
   it("should display the All Hubs table and column headers", () => {
-    // Verify All Hubs Table
+    // Verify All Hubs table
     cy.get('[data-test-id="all-hubs-list"]').should("be.visible");
 
     // Verify All Hubs column headers
