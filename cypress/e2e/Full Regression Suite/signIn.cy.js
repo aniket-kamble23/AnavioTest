@@ -38,7 +38,7 @@ describe("Sign In Page Tests", () => {
 
     // Footer
     cy.get(".footer")
-      .contains("Copyright © Anavio 2024 | Version 1.0.15")
+      .contains("Copyright © Anavio 2025 | Version 1.0.15")
       .should("be.visible");
   });
 

@@ -25,7 +25,7 @@ describe("Integrations > Webhooks Page Tests", () => {
         .should("be.visible")
         .find("mat-icon > svg")
         .should("be.visible");
-      cy.get(".anavio-header-title").should("be.visible").contains("Webhoooks");
+      cy.get(".anavio-header-title").should("be.visible").contains("Webhooks");
       cy.get(".breadcrumb-home-icon")
         .should("be.visible")
         .find("mat-icon > svg")

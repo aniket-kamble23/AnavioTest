@@ -76,7 +76,7 @@ describe("Devices > All Hubs Page Tests", () => {
       cy.get("@hubsBtn").should("have.class", "active-route");
 
       // Verify Add Device button and its icon
-      cy.get("button.add-device-btn")
+      cy.get("button.add-device-button")
         .should("contain", "Add Device")
         .within(() => {
           cy.get("mat-icon svg").should("be.visible");
