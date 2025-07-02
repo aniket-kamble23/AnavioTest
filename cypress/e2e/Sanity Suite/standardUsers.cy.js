@@ -169,7 +169,7 @@ describe("Standard Users Page Tests", () => {
               // If an image exists, assert it's visible
               cy.wrap($img).should("be.visible");
             } else {
-              // Otherwise, check for mat-icon svg
+              // Otherwise, check for user's initials
               cy.get("div.profile-image")
                 .invoke("text")
                 .then((text) => {

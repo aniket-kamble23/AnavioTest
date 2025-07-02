@@ -163,9 +163,17 @@ describe("Guest Users Page Tests", () => {
       .first()
       .within(() => {
         cy.get(".mat-column-fullName").within(() => {
-          cy.get("div.profile-image")
-            // Complete img vs no img container validation. See Host test below
-            .should("be.visible");
+          cy.get("div.profile-image").should(($el) => {
+            // Look for the image first
+            const img = $el.find("img");
+            if (img.length) {
+              // If an image exists, assert it's visible
+              expect(Cypress.dom.isVisible(img[0])).to.be.true;
+            } else {
+              // Otherwise, check for user's initials
+              expect($el.text().trim()).to.have.length(2);
+            }
+          });
 
           // Validate that the full name text is present and not empty
           cy.get("div.nameSpace")
@@ -258,7 +266,7 @@ describe("Guest Users Page Tests", () => {
               // If an image exists, assert it's visible
               cy.wrap($img).should("be.visible");
             } else {
-              // Otherwise, check for mat-icon svg
+              // Otherwise, check for user's initials
               cy.get("div.profile-image")
                 .invoke("text")
                 .then((text) => {
