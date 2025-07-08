@@ -652,7 +652,7 @@ describe("Dashboard Page Tests", () => {
     });
   });
 
-  it("should display a site name and camera name in each Camera Activity card footer", () => {
+  it.only("should display a site name and camera name in each Camera Activity card footer", () => {
     cy.get(".camera-activity-list").within(() => {
       cy.get("app-camera-activity-card").each(($card) => {
         cy.wrap($card).within(() => {
@@ -671,6 +671,7 @@ describe("Dashboard Page Tests", () => {
 
           // Validate Camera Name
           cy.get(".camera-name")
+        
             .should("exist")
             .invoke("text")
             .then((cameraName) => {
@@ -691,3 +692,4 @@ describe("Dashboard Page Tests", () => {
     cy.url().should("include", "/auth/sign-in");
   });
 });
+////aniket
